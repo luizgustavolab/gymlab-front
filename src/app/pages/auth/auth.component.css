@@ -1,6 +1,7 @@
 :host {
   display: block;
-  min-height: 100vh;
+
+  min-height: 100dvh;
 
   background:
     radial-gradient(circle at top, #111827 0%, #020617 60%);
@@ -11,6 +12,8 @@
     Inter,
     system-ui,
     sans-serif;
+
+  overflow-y: auto;
 }
 
 /* ===================================================== */
@@ -18,15 +21,20 @@
 /* ===================================================== */
 
 .app-container {
-  min-height: 100vh;
+
+  min-height: 100dvh;
 
   display: flex;
   flex-direction: column;
 
   align-items: center;
-  justify-content: center;
 
-  padding: 24px;
+  justify-content: flex-start;
+
+  padding:
+    32px 24px 48px;
+
+  overflow-y: auto;
 }
 
 /* ===================================================== */
@@ -46,6 +54,8 @@
   border-radius: 28px;
 
   padding: 36px 28px;
+
+  margin: auto 0;
 
   box-shadow:
     0 15px 40px rgba(0, 0, 0, 0.35);
@@ -339,18 +349,34 @@
 
 @media (max-width: 640px) {
 
-  .card {
-    padding: 28px 20px;
+  .app-container {
 
-    border-radius: 24px;
+    justify-content: flex-start;
+
+    padding:
+      24px 16px 48px;
+  }
+
+  .card {
+
+    padding: 24px 18px;
+
+    border-radius: 22px;
+
+    margin-top: 12px;
+    margin-bottom: 24px;
   }
 
   .logo {
-    font-size: 2.5rem;
+    font-size: 2.3rem;
   }
 
   .title {
-    font-size: 1.7rem;
+    font-size: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: 0.92rem;
   }
 
   .row {
@@ -362,6 +388,21 @@
   .btn-primary,
   .btn-secondary,
   .btn-link {
-    padding: 15px 16px;
+
+    padding: 14px 15px;
+
+    font-size: 0.92rem;
+  }
+
+  .lgpd-overlay {
+
+    padding: 18px;
+  }
+
+  .lgpd-modal {
+
+    max-height: 88dvh;
+
+    overflow-y: auto;
   }
 }

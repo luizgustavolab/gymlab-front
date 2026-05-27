@@ -6,8 +6,12 @@ import {
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
+
 import { Router } from '@angular/router';
+
 import { HttpClient } from '@angular/common/http';
+
+import { TreinoService } from '../../services/treino';
 
 import {
   FormControl,
@@ -30,8 +34,14 @@ import { supabase } from '../../supabase';
 })
 export class AuthComponent implements OnInit {
 
-  private router = inject(Router);
-  private http = inject(HttpClient);
+  private router =
+    inject(Router);
+
+  private http =
+    inject(HttpClient);
+
+  private treinoService =
+    inject(TreinoService);
 
   protected view = signal<
     'AUTH' |
@@ -40,15 +50,21 @@ export class AuthComponent implements OnInit {
     'RECOVER'
   >('AUTH');
 
-  protected carregando = signal(false);
+  protected carregando =
+    signal(false);
 
-  protected mensagemErro = signal<string | null>(null);
+  protected mensagemErro =
+    signal<string | null>(null);
 
-  protected mensagemSucesso = signal<string | null>(null);
+  protected mensagemSucesso =
+    signal<string | null>(null);
 
-  protected readonly exibirBanner = signal(
-    !localStorage.getItem('gymlab_lgpd_consent')
-  );
+  protected readonly exibirBanner =
+    signal(
+      !localStorage.getItem(
+        'gymlab_lgpd_consent'
+      )
+    );
 
   protected opcoesGenero = [
     'MASCULINO',
@@ -69,62 +85,79 @@ export class AuthComponent implements OnInit {
 
   protected alturas = Array.from(
     { length: 111 },
-    (_, i) => (1.30 + i * 0.01).toFixed(2)
+    (_, i) =>
+      (1.30 + i * 0.01)
+        .toFixed(2)
   );
 
-  protected formLogin = new FormGroup({
+  protected formLogin =
+    new FormGroup({
 
-    email: new FormControl('', [
-      Validators.required,
-      Validators.email
-    ]),
+      email: new FormControl('', [
+        Validators.required,
+        Validators.email
+      ]),
 
-    senha: new FormControl('', [
-      Validators.required,
-      Validators.minLength(6)
-    ])
-  });
+      senha: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6)
+      ])
+    });
 
-  protected formRecover = new FormGroup({
+  protected formRecover =
+    new FormGroup({
 
-    email: new FormControl('', [
-      Validators.required,
-      Validators.email
-    ])
-  });
+      email: new FormControl('', [
+        Validators.required,
+        Validators.email
+      ])
+    });
 
-  protected formCadastro = new FormGroup({
+  protected formCadastro =
+    new FormGroup({
 
-    nome: new FormControl('', Validators.required),
+      nome: new FormControl('', [
+        Validators.required
+      ]),
 
-    email: new FormControl('', [
-      Validators.required,
-      Validators.email
-    ]),
+      email: new FormControl('', [
+        Validators.required,
+        Validators.email
+      ]),
 
-    senha: new FormControl('', [
-      Validators.required,
-      Validators.minLength(6)
-    ]),
+      senha: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6)
+      ]),
 
-    genero: new FormControl('', Validators.required),
+      genero: new FormControl('', [
+        Validators.required
+      ]),
 
-    peso: new FormControl('70', Validators.required),
+      peso: new FormControl('70', [
+        Validators.required
+      ]),
 
-    altura: new FormControl('1.70', Validators.required),
+      altura: new FormControl('1.70', [
+        Validators.required
+      ]),
 
-    objetivo: new FormControl('', Validators.required),
+      objetivo: new FormControl('', [
+        Validators.required
+      ]),
 
-    diasPorSemana: new FormControl(3, [
-      Validators.required,
-      Validators.min(1),
-      Validators.max(7)
-    ])
-  });
+      diasPorSemana:
+        new FormControl(3, [
+          Validators.required,
+          Validators.min(1),
+          Validators.max(7)
+        ])
+    });
 
-  ngOnInit() {
+  ngOnInit(): void {
 
     if (!this.exibirBanner()) {
+
       this.view.set('AUTH');
     }
   }
@@ -135,7 +168,7 @@ export class AuthComponent implements OnInit {
       'LOGIN' |
       'REGISTER' |
       'RECOVER'
-  ) {
+  ): void {
 
     this.mensagemErro.set(null);
 
@@ -145,58 +178,64 @@ export class AuthComponent implements OnInit {
   }
 
   protected computarConsentimento(
-  aceitou: boolean
-): void {
+    aceitou: boolean
+  ): void {
 
-  const payload = {
+    const payload = {
 
-    consentido: aceitou,
+      consentido: aceitou,
 
-    dataHora: new Date().toISOString(),
+      dataHora:
+        new Date().toISOString(),
 
-    versaoTermo: '1.0'
-  };
+      versaoTermo: '1.0'
+    };
 
-  localStorage.setItem(
-    'gymlab_lgpd_consent',
-    JSON.stringify(payload)
-  );
+    localStorage.setItem(
+      'gymlab_lgpd_consent',
+      JSON.stringify(payload)
+    );
 
-  this.http.post(
-    'http://localhost:8080/api/lgpd/consentimento',
-    payload
-  ).subscribe({
+    this.http.post(
+      'http://localhost:8080/api/lgpd/consentimento',
+      payload
+    ).subscribe({
 
-    next: () => {
+      next: () => {
 
-      console.log(
-        'Consentimento LGPD registrado.'
-      );
-    },
+        console.log(
+          'Consentimento LGPD registrado.'
+        );
+      },
 
-    error: (err) => {
+      error: (err) => {
 
-      console.error(
-        'Erro ao registrar consentimento:',
-        err
-      );
-    }
-  });
+        console.error(
+          'Erro ao registrar consentimento:',
+          err
+        );
+      }
+    });
 
-  this.exibirBanner.set(false);
+    this.exibirBanner.set(false);
 
-  this.view.set('AUTH');
-}
+    this.view.set('AUTH');
+  }
 
-  protected async login() {
+  protected async login():
+    Promise<void> {
 
-    if (this.formLogin.invalid) {
+    if (
+      this.formLogin.invalid
+    ) {
       return;
     }
 
     this.carregando.set(true);
 
     this.mensagemErro.set(null);
+
+    this.mensagemSucesso.set(null);
 
     const {
       email,
@@ -205,16 +244,19 @@ export class AuthComponent implements OnInit {
 
     const {
       error
-    } = await supabase.auth.signInWithPassword({
+    } = await supabase.auth
+      .signInWithPassword({
 
-      email: email!,
-      password: senha!
-    });
+        email: email!,
+        password: senha!
+      });
 
     if (error) {
 
+      console.error(error);
+
       this.mensagemErro.set(
-        'Credenciais inválidas.'
+        'E-mail ou senha inválidos.'
       );
 
       this.carregando.set(false);
@@ -222,27 +264,43 @@ export class AuthComponent implements OnInit {
       return;
     }
 
-    this.router.navigate(['/dashboard']);
+    this.carregando.set(false);
+
+    this.router.navigate([
+      '/dashboard'
+    ]);
   }
 
-  protected async recuperarSenha() {
+  protected async recuperarSenha():
+    Promise<void> {
 
-    if (this.formRecover.invalid) {
+    if (
+      this.formRecover.invalid
+    ) {
       return;
     }
 
     this.carregando.set(true);
+
+    this.mensagemErro.set(null);
+
+    this.mensagemSucesso.set(null);
 
     const email =
       this.formRecover.value.email!;
 
     const {
       error
-    } = await supabase.auth.resetPasswordForEmail(email);
+    } = await supabase.auth
+      .resetPasswordForEmail(email);
 
     if (error) {
 
-      this.mensagemErro.set(error.message);
+      console.error(error);
+
+      this.mensagemErro.set(
+        'Erro ao enviar recuperação.'
+      );
 
     } else {
 
@@ -254,9 +312,12 @@ export class AuthComponent implements OnInit {
     this.carregando.set(false);
   }
 
-  protected async enviarCadastroUnificado() {
+  protected async enviarCadastroUnificado():
+    Promise<void> {
 
-    if (this.formCadastro.invalid) {
+    if (
+      this.formCadastro.invalid
+    ) {
       return;
     }
 
@@ -264,52 +325,203 @@ export class AuthComponent implements OnInit {
 
     this.mensagemErro.set(null);
 
-    const {
-      email,
-      senha,
-      ...dadosPerfil
-    } = this.formCadastro.getRawValue();
+    this.mensagemSucesso.set(null);
 
-    const {
-      data,
-      error
-    } = await supabase.auth.signUp({
+    try {
 
-      email: email!,
-      password: senha!
-    });
+      const {
+        nome,
+        email,
+        senha,
+        genero,
+        peso,
+        altura,
+        objetivo,
+        diasPorSemana
+      } =
+        this.formCadastro.getRawValue();
 
-    if (error) {
+      /* ===================================== */
+      /* CADASTRO SUPABASE */
+      /* ===================================== */
 
-      this.mensagemErro.set(
-        error.message
-      );
+      const signUpResult =
+        await supabase.auth
+          .signUp({
 
-      this.carregando.set(false);
+            email: email!,
+            password: senha!,
 
-      return;
-    }
+            options: {
 
-    this.http.post(
-      'http://localhost:8080/api/treinos/gerar',
-      dadosPerfil
-    ).subscribe({
+              data: {
+                nome
+              }
+            }
+          });
 
-      next: () => {
+      if (signUpResult.error) {
 
-        this.router.navigate([
-          '/dashboard'
-        ]);
-      },
+        console.error(
+          signUpResult.error
+        );
 
-      error: () => {
+        const mensagem =
+          signUpResult.error.message
+            || '';
+
+        if (
+          mensagem.includes(
+            'User already registered'
+          )
+        ) {
+
+          this.mensagemErro.set(
+            'Já existe uma conta cadastrada com este e-mail.'
+          );
+
+        } else {
+
+          this.mensagemErro.set(
+            'Erro ao criar conta.'
+          );
+        }
+
+        this.carregando.set(false);
+
+        return;
+      }
+
+      /* ===================================== */
+      /* LOGIN AUTOMÁTICO */
+      /* ===================================== */
+
+      const loginResult =
+        await supabase.auth
+          .signInWithPassword({
+
+            email: email!,
+            password: senha!
+          });
+
+      if (loginResult.error) {
+
+        console.error(
+          loginResult.error
+        );
 
         this.mensagemErro.set(
-          'Erro ao gerar treino.'
+          'Conta criada, mas não foi possível autenticar automaticamente.'
         );
 
         this.carregando.set(false);
+
+        return;
       }
-    });
+
+      /* ===================================== */
+      /* TOKEN JWT */
+      /* ===================================== */
+
+      const session =
+        loginResult.data.session;
+
+      const accessToken =
+        session?.access_token;
+
+      if (!accessToken) {
+
+        this.mensagemErro.set(
+          'Falha ao obter token de autenticação.'
+        );
+
+        this.carregando.set(false);
+
+        return;
+      }
+
+      /* ===================================== */
+      /* GERAÇÃO DO TREINO */
+      /* ===================================== */
+
+      this.treinoService
+        .gerarTreino(
+          {
+            genero,
+            peso,
+            altura,
+            objetivo,
+            diasPorSemana
+          },
+          accessToken
+        )
+        .subscribe({
+
+          next: () => {
+
+            this.mensagemSucesso.set(
+              'Conta criada e treino gerado com sucesso!'
+            );
+
+            this.carregando.set(false);
+
+            setTimeout(() => {
+
+              this.router.navigate([
+                '/dashboard'
+              ]);
+
+            }, 1200);
+          },
+
+          error: (erro) => {
+
+            console.error(erro);
+
+            if (
+              erro?.status === 401
+            ) {
+
+              this.mensagemErro.set(
+                'Usuário autenticado, mas o backend recusou o token JWT.'
+              );
+
+            } else {
+
+              this.mensagemErro.set(
+                'Erro ao gerar treino inteligente.'
+              );
+            }
+
+            this.carregando.set(false);
+          }
+        });
+
+    } catch (erro: any) {
+
+      console.error(erro);
+
+      const mensagem =
+        erro?.message || '';
+
+      if (
+        mensagem.includes(
+          'User already registered'
+        )
+      ) {
+
+        this.mensagemErro.set(
+          'Já existe uma conta cadastrada com este e-mail.'
+        );
+
+      } else {
+
+        this.mensagemErro.set(
+          'Erro inesperado ao criar conta.'
+        );
+      }
+
+      this.carregando.set(false);
+    }
   }
 }

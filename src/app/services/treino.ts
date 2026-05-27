@@ -1,232 +1,174 @@
-import { Injectable, inject } from '@angular/core';
+import {
+  inject,
+  Injectable
+} from '@angular/core';
 
-import { HttpClient } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders
+} from '@angular/common/http';
 
-import { firstValueFrom } from 'rxjs';
+import {
+  from,
+  switchMap,
+  throwError
+} from 'rxjs';
 
-import { environment } from '../../environments/environment';
+import { environment }
+  from '../../environments/environment';
 
-import { AuthService } from './auth';
-
-/* ===================================================== */
-/* TYPES */
-/* ===================================================== */
-
-export interface Exercicio {
-
-  id: string;
-
-  nome: string;
-
-  categoria: string;
-
-  equipamento: string;
-
-  instrucao: string;
-}
-
-export interface TreinoUsuario {
-
-  id?: string;
-
-  diaSemana: string;
-
-  grupoMuscular: string;
-
-  exercicio: Exercicio;
-
-  series: number;
-
-  repeticoes: number;
-
-  intervalo: string;
-
-  criadoEm?: string;
-
-  concluido?: boolean;
-
-  ultimoPeso?: number;
-
-  expandido?: boolean;
-}
-
-export interface GeraTreinoPayload {
-
-  genero: string;
-
-  peso: number;
-
-  altura: number;
-
-  objetivo: string;
-
-  diasPorSemana: number;
-
-  feedbackAjuste?: string;
-}
-
-/* ===================================================== */
-/* SERVICE */
-/* ===================================================== */
+import { supabase }
+  from '../supabase';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TreinoService {
 
-  private readonly http = inject(HttpClient);
+  private http =
+    inject(HttpClient);
 
-  private readonly auth = inject(AuthService);
-
-  private readonly api =
+  private apiUrl =
     environment.apiUrl;
 
-  /* ===================================================== */
-  /* TOKEN */
-  /* ===================================================== */
+  /**
+   * =========================================
+   * HEADERS COM JWT
+   * =========================================
+   */
 
-  private async authHeaders() {
+  private obterHeaders() {
 
-    const token =
-      await this.auth.obterToken();
+    return from(
+      supabase.auth.getSession()
+    ).pipe(
 
-    return {
+      switchMap(({ data, error }) => {
+
+  if (error) {
+
+    console.error(
+      'Erro ao obter sessão:',
+      error
+    );
+
+    return throwError(
+      () => error
+    );
+  }
+
+  console.log(
+    'Sessão Supabase:',
+    data.session
+  );
+
+  const token =
+    data.session?.access_token;
+
+  console.log(
+    'JWT TOKEN:',
+    token
+  );
+
+  if (!token) {
+
+    console.error(
+      'Token JWT não encontrado.'
+    );
+
+    return throwError(
+      () => new Error(
+        'Usuário não autenticado.'
+      )
+    );
+  }
+
+  const headers =
+    new HttpHeaders({
+
       Authorization:
-        `Bearer ${token}`
-    };
-  }
+        `Bearer ${token}`,
 
-  /* ===================================================== */
-  /* EXERCÍCIOS */
-  /* ===================================================== */
+      'Content-Type':
+        'application/json'
+    });
 
-  async listarExercicios():
-    Promise<Exercicio[]> {
-
-    return firstValueFrom(
-
-      this.http.get<Exercicio[]>(
-
-        `${this.api}/exercicios`
-      )
+  return [headers];
+})
     );
   }
 
-  /* ===================================================== */
-  /* GERAR TREINO IA */
-  /* ===================================================== */
+  /**
+   * =========================================
+   * GERA TREINO IA
+   * =========================================
+   */
 
-  async gerarTreino(
-    payload: GeraTreinoPayload
-  ): Promise<TreinoUsuario[]> {
+  gerarTreino(
+    payload: unknown,
+    tokenManual?: string
+  ) {
 
-    const headers =
-      await this.authHeaders();
+    /**
+     * Caso o token venha manualmente
+     * do login/cadastro, evita race
+     * condition do Supabase.
+     */
 
-    return firstValueFrom(
+    if (tokenManual) {
 
-      this.http.post<TreinoUsuario[]>(
+      const headers =
+        new HttpHeaders({
 
-        `${this.api}/treinos/gerar`,
+          Authorization:
+            `Bearer ${tokenManual}`,
+
+          'Content-Type':
+            'application/json'
+        });
+
+      return this.http.post(
+        `${this.apiUrl}/treinos/gerar`,
         payload,
-        {
-          headers
-        }
+        { headers }
+      );
+    }
+
+    /**
+     * Fluxo padrão:
+     * busca token da sessão
+     */
+
+    return this.obterHeaders().pipe(
+
+      switchMap(headers =>
+
+        this.http.post(
+          `${this.apiUrl}/treinos/gerar`,
+          payload,
+          { headers }
+        )
       )
     );
   }
 
-  /* ===================================================== */
-  /* MOCK TEMPORÁRIO DASHBOARD */
-  /* ===================================================== */
+  /**
+   * =========================================
+   * BUSCAR TREINO DO USUÁRIO
+   * =========================================
+   */
 
-  treinoMockHoje(): TreinoUsuario[] {
+  buscarMeuTreino() {
 
-    return [
+    return this.obterHeaders().pipe(
 
-      {
-        diaSemana: 'Segunda',
+      switchMap(headers =>
 
-        grupoMuscular: 'PEITO',
-
-        exercicio: {
-          id: '1',
-          nome: 'Supino Reto com Barra',
-          categoria: 'PEITO',
-          equipamento:
-            'Banco Horizontal e Barra',
-          instrucao:
-            'Deite no banco, desça a barra até o peito e empurre verticalmente.'
-        },
-
-        series: 4,
-
-        repeticoes: 12,
-
-        intervalo: '60s',
-
-        concluido: false,
-
-        ultimoPeso: 20,
-
-        expandido: false
-      },
-
-      {
-        diaSemana: 'Segunda',
-
-        grupoMuscular: 'PEITO',
-
-        exercicio: {
-          id: '2',
-          nome: 'Crucifixo Máquina',
-          categoria: 'PEITO',
-          equipamento:
-            'Máquina Peck Deck',
-          instrucao:
-            'Mantenha os cotovelos semiflexionados e feche os braços lentamente.'
-        },
-
-        series: 3,
-
-        repeticoes: 15,
-
-        intervalo: '45s',
-
-        concluido: false,
-
-        ultimoPeso: 12,
-
-        expandido: false
-      },
-
-      {
-        diaSemana: 'Segunda',
-
-        grupoMuscular: 'TRICEPS',
-
-        exercicio: {
-          id: '3',
-          nome: 'Tríceps Corda',
-          categoria: 'TRICEPS',
-          equipamento:
-            'Polia Alta',
-          instrucao:
-            'Estenda completamente os cotovelos abrindo a corda no final.'
-        },
-
-        series: 4,
-
-        repeticoes: 10,
-
-        intervalo: '60s',
-
-        concluido: false,
-
-        ultimoPeso: 18,
-
-        expandido: false
-      }
-    ];
+        this.http.get(
+          `${this.apiUrl}/treinos/me`,
+          { headers }
+        )
+      )
+    );
   }
 }

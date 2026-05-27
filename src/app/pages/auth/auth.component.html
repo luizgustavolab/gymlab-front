@@ -250,6 +250,16 @@
         Criar conta
       </h2>
 
+      <!-- BOTÃO VOLTAR -->
+      <button
+        type="button"
+        class="btn-link"
+        (click)="irPara('AUTH')">
+
+        ← Voltar
+
+      </button>
+
       <form
         [formGroup]="formCadastro"
         (ngSubmit)="enviarCadastroUnificado()"
@@ -259,7 +269,7 @@
           class="input"
           formControlName="nome"
           type="text"
-          placeholder="Nome completo">
+          placeholder="Nome">
 
         <input
           class="input"
@@ -339,13 +349,40 @@
 
         </select>
 
-        <input
-          class="input"
-          formControlName="diasPorSemana"
-          type="number"
-          min="1"
-          max="7"
-          placeholder="Dias de treino por semana">
+        <!-- SELECT 1-7 DIAS -->
+        <select
+          class="select"
+          formControlName="diasPorSemana">
+
+          <option [value]="1">
+            1 dia por semana
+          </option>
+
+          <option [value]="2">
+            2 dias por semana
+          </option>
+
+          <option [value]="3">
+            3 dias por semana
+          </option>
+
+          <option [value]="4">
+            4 dias por semana
+          </option>
+
+          <option [value]="5">
+            5 dias por semana
+          </option>
+
+          <option [value]="6">
+            6 dias por semana
+          </option>
+
+          <option [value]="7">
+            7 dias por semana
+          </option>
+
+        </select>
 
         <button
           type="submit"
@@ -359,18 +396,6 @@
           }}
 
         </button>
-
-        <div class="stack-buttons">
-
-          <button
-            type="button"
-            class="btn-link"
-            (click)="irPara('AUTH')">
-
-            Voltar
-          </button>
-
-        </div>
 
       </form>
 

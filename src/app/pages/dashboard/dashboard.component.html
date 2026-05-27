@@ -1,39 +1,135 @@
-<div class="dashboard-layout">
+<div class="dashboard-container">
 
-  <aside class="sidebar">
-
-    <h2>
-      GYMLAB
-    </h2>
-
-    <button>
-      Meu treino
-    </button>
-
-    <button>
-      Gerar nova ficha
-    </button>
-
-    <button>
-      Perfil
-    </button>
-
-    <button>
-      Sair
-    </button>
-
-  </aside>
-
-  <main class="dashboard-content">
+  <div class="dashboard-header">
 
     <h1>
-      Hoje é Segunda-feira
+      Meu Treino Inteligente
     </h1>
 
-    <h2>
-      Seu treino é PERNAS
-    </h2>
+    <div class="header-actions">
 
-  </main>
+      <button
+        class="refresh-btn"
+        (click)="carregarTreinos()">
+
+        Atualizar
+      </button>
+
+      <button
+        class="logout-btn"
+        (click)="sair()">
+
+        Sair
+      </button>
+
+    </div>
+
+  </div>
+
+  @if (carregando()) {
+
+    <div class="loading-box">
+
+      <p>
+        Carregando treino inteligente...
+      </p>
+
+    </div>
+  }
+
+  @if (erro()) {
+
+    <div class="error-box">
+
+      <p>
+        {{ erro() }}
+      </p>
+
+    </div>
+  }
+
+  @if (
+    !carregando() &&
+    !erro() &&
+    treinos().length === 0
+  ) {
+
+    <div class="empty-box">
+
+      <p>
+        Nenhum treino encontrado.
+      </p>
+
+    </div>
+  }
+
+  @if (treinos().length > 0) {
+
+    @for (
+      dia of treinosAgrupados() | keyvalue;
+      track dia.key
+    ) {
+
+      <section class="dia-section">
+
+        <h2>
+          {{ dia.key }}
+        </h2>
+
+        <div class="cards-grid">
+
+          @for (
+            treino of dia.value;
+            track treino.exercicioNome
+          ) {
+
+            <article class="treino-card">
+
+              <span class="grupo">
+                {{ treino.grupoMuscular }}
+              </span>
+
+              <h3>
+                {{ treino.exercicioNome }}
+              </h3>
+
+              <p>
+                <strong>Equipamento:</strong>
+                {{ treino.equipamento }}
+              </p>
+
+              <p>
+                <strong>Séries:</strong>
+                {{ treino.series }}
+              </p>
+
+              <p>
+                <strong>Repetições:</strong>
+                {{ treino.repeticoes }}
+              </p>
+
+              <p>
+                <strong>Intervalo:</strong>
+                {{ treino.intervalo }}
+              </p>
+
+              <div class="instrucao">
+
+                <strong>Execução:</strong>
+
+                <p>
+                  {{ treino.instrucao }}
+                </p>
+
+              </div>
+
+            </article>
+          }
+
+        </div>
+
+      </section>
+    }
+  }
 
 </div>

@@ -1,379 +1,174 @@
 :host {
+
   display: block;
+
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top, #111827 0%, #020617 60%);
-  color: #f8fafc;
-  font-family:
-    Inter,
-    system-ui,
-    sans-serif;
+
+  background: #0f172a;
+
+  color: white;
+
+  padding: 24px;
+
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-/* ===================================================== */
-/* LAYOUT */
-/* ===================================================== */
+.dashboard-container {
 
-.dashboard-layout {
-  display: flex;
-  min-height: 100vh;
+  max-width: 1200px;
+
+  margin: 0 auto;
 }
 
-/* ===================================================== */
-/* SIDEBAR */
-/* ===================================================== */
-
-.sidebar {
-  width: 280px;
-  min-width: 280px;
-
-  background: rgba(15, 23, 42, 0.95);
-
-  border-right:
-    1px solid rgba(51, 65, 85, 0.6);
-
-  padding: 32px 24px;
+.dashboard-header {
 
   display: flex;
-  flex-direction: column;
-  gap: 18px;
 
-  backdrop-filter: blur(18px);
+  justify-content: space-between;
 
-  box-shadow:
-    0 0 40px rgba(0, 0, 0, 0.35);
+  align-items: center;
+
+  margin-bottom: 32px;
+
+  gap: 16px;
+
+  flex-wrap: wrap;
 }
 
-.sidebar h2 {
-  font-size: 2rem;
-  font-weight: 900;
-  letter-spacing: -1px;
+.dashboard-header h1 {
 
-  color: #10b981;
+  font-size: 32px;
 
-  margin-bottom: 28px;
+  font-weight: bold;
 }
 
-/* ===================================================== */
-/* BOTÕES SIDEBAR */
-/* ===================================================== */
+.header-actions {
 
-.sidebar button {
-  width: 100%;
+  display: flex;
+
+  gap: 12px;
+}
+
+button {
 
   border: none;
 
-  border-radius: 16px;
+  padding: 12px 18px;
 
-  padding: 16px 18px;
-
-  background: #111827;
-
-  color: #e2e8f0;
-
-  font-size: 0.95rem;
-  font-weight: 600;
+  border-radius: 10px;
 
   cursor: pointer;
 
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease,
-    border 0.2s ease;
+  font-weight: bold;
 
-  border:
-    1px solid rgba(51, 65, 85, 0.7);
+  transition: 0.2s;
 }
 
-.sidebar button:hover {
+button:hover {
+
+  opacity: 0.9;
+}
+
+.refresh-btn {
+
+  background: #2563eb;
+
+  color: white;
+}
+
+.logout-btn {
+
+  background: #dc2626;
+
+  color: white;
+}
+
+.loading-box,
+.error-box,
+.empty-box {
+
   background: #1e293b;
 
-  transform: translateY(-2px);
+  padding: 24px;
 
-  border-color: #10b981;
+  border-radius: 16px;
+
+  margin-bottom: 24px;
 }
 
-.sidebar button:last-child {
-  margin-top: auto;
+.error-box {
 
-  background: rgba(239, 68, 68, 0.12);
-
-  border:
-    1px solid rgba(239, 68, 68, 0.4);
-
-  color: #fca5a5;
+  border: 1px solid #ef4444;
 }
 
-.sidebar button:last-child:hover {
-  background: rgba(239, 68, 68, 0.18);
+.dia-section {
+
+  margin-bottom: 48px;
 }
 
-/* ===================================================== */
-/* MAIN CONTENT */
-/* ===================================================== */
+.dia-section h2 {
 
-.dashboard-content {
-  flex: 1;
+  margin-bottom: 20px;
 
-  padding:
-    48px 32px;
+  font-size: 24px;
+
+  color: #38bdf8;
+}
+
+.cards-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(280px, 1fr));
+
+  gap: 20px;
+}
+
+.treino-card {
+
+  background: #1e293b;
+
+  border-radius: 18px;
+
+  padding: 20px;
 
   display: flex;
+
   flex-direction: column;
 
-  gap: 28px;
+  gap: 10px;
+
+  border: 1px solid #334155;
 }
 
-/* ===================================================== */
-/* HEADER */
-/* ===================================================== */
+.grupo {
 
-.dashboard-content h1 {
-  font-size: 2.3rem;
-  font-weight: 900;
+  display: inline-block;
 
-  color: #ffffff;
+  background: #2563eb;
 
-  line-height: 1.1;
+  padding: 6px 10px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+
+  width: fit-content;
+}
+
+.treino-card h3 {
+
+  font-size: 22px;
 
   margin: 0;
 }
 
-.dashboard-content h2 {
-  font-size: 1.2rem;
-  font-weight: 600;
+.instrucao {
 
-  color: #94a3b8;
+  margin-top: 10px;
 
-  margin-top: -10px;
-}
+  padding-top: 10px;
 
-/* ===================================================== */
-/* TREINO CARD */
-/* ===================================================== */
-
-.workout-card {
-  background:
-    rgba(15, 23, 42, 0.92);
-
-  border:
-    1px solid rgba(51, 65, 85, 0.7);
-
-  border-radius: 24px;
-
-  padding: 28px;
-
-  display: flex;
-  flex-direction: column;
-
-  gap: 20px;
-
-  backdrop-filter: blur(14px);
-
-  box-shadow:
-    0 10px 35px rgba(0, 0, 0, 0.28);
-}
-
-/* ===================================================== */
-/* EXERCÍCIO */
-/* ===================================================== */
-
-.exercise-item {
-  background:
-    rgba(2, 6, 23, 0.8);
-
-  border:
-    1px solid rgba(30, 41, 59, 0.9);
-
-  border-radius: 18px;
-
-  padding: 18px;
-
-  transition:
-    border 0.2s ease,
-    background 0.2s ease;
-}
-
-.exercise-item:hover {
-  border-color: #10b981;
-
-  background:
-    rgba(15, 23, 42, 0.95);
-}
-
-.exercise-header {
-  display: flex;
-
-  align-items: center;
-
-  justify-content: space-between;
-
-  gap: 12px;
-
-  cursor: pointer;
-}
-
-.exercise-name {
-  font-size: 1rem;
-  font-weight: 700;
-
-  color: #f8fafc;
-}
-
-.exercise-check {
-  width: 22px;
-  height: 22px;
-
-  accent-color: #10b981;
-
-  cursor: pointer;
-}
-
-/* ===================================================== */
-/* DETALHES */
-/* ===================================================== */
-
-.exercise-details {
-  margin-top: 18px;
-
-  padding-top: 18px;
-
-  border-top:
-    1px solid rgba(51, 65, 85, 0.5);
-
-  display: flex;
-  flex-direction: column;
-
-  gap: 14px;
-}
-
-.exercise-meta {
-  display: flex;
-  flex-wrap: wrap;
-
-  gap: 12px;
-}
-
-.exercise-badge {
-  background:
-    rgba(16, 185, 129, 0.12);
-
-  color: #6ee7b7;
-
-  border:
-    1px solid rgba(16, 185, 129, 0.25);
-
-  border-radius: 999px;
-
-  padding:
-    8px 12px;
-
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-
-.exercise-instruction {
-  color: #cbd5e1;
-
-  line-height: 1.6;
-
-  font-size: 0.95rem;
-}
-
-/* ===================================================== */
-/* PESO */
-/* ===================================================== */
-
-.weight-form {
-  display: flex;
-  gap: 12px;
-
-  align-items: center;
-}
-
-.weight-input {
-  width: 120px;
-
-  background: #020617;
-
-  border:
-    1px solid #334155;
-
-  border-radius: 14px;
-
-  padding:
-    12px 14px;
-
-  color: #ffffff;
-
-  outline: none;
-}
-
-.weight-input:focus {
-  border-color: #10b981;
-}
-
-.save-weight-button {
-  border: none;
-
-  border-radius: 14px;
-
-  padding:
-    12px 18px;
-
-  background: #10b981;
-
-  color: #020617;
-
-  font-weight: 800;
-
-  cursor: pointer;
-
-  transition:
-    opacity 0.2s ease,
-    transform 0.2s ease;
-}
-
-.save-weight-button:hover {
-  opacity: 0.92;
-
-  transform: translateY(-1px);
-}
-
-/* ===================================================== */
-/* RESPONSIVO */
-/* ===================================================== */
-
-@media (max-width: 900px) {
-
-  .dashboard-layout {
-    flex-direction: column;
-  }
-
-  .sidebar {
-    width: 100%;
-    min-width: 100%;
-
-    border-right: none;
-
-    border-bottom:
-      1px solid rgba(51, 65, 85, 0.6);
-  }
-
-  .dashboard-content {
-    padding: 28px 18px;
-  }
-
-  .dashboard-content h1 {
-    font-size: 1.8rem;
-  }
-
-  .weight-form {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .weight-input {
-    width: 100%;
-  }
+  border-top: 1px solid #334155;
 }
