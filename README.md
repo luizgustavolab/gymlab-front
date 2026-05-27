@@ -1,59 +1,45 @@
-# GymlabFront
+### 2. README do Frontend (Repositório do Angular - a criar)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.12.
+```markdown
+# GymLab Web 🏋️‍♂️🖥️
 
-## Development server
+GymLab Web é a interface (SPA) desenvolvida para academias e alunos gerenciarem seus treinos, cadastrarem perfis biométricos e visualizarem as fichas inteligentes geradas por Inteligência Artificial.
 
-To start a local development server, run:
+## 🧠 Arquitetura Front-end
 
-```bash
-ng serve
-```
+Este projeto atua exclusivamente como a camada de apresentação e interação do usuário, delegando processamentos pesados para a nossa API construída em Spring Boot. 
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+O fluxo de autenticação utiliza o cliente nativo do **Supabase Auth** no client-side. Uma vez que o usuário faz login, o Angular intercepta o token JWT e o anexa no cabeçalho (Header) de todas as requisições HTTP (`HttpClient`) direcionadas à nossa API, garantindo a segurança estrita do ecossistema.
 
-## Code scaffolding
+## 🔧 Tecnologias Utilizadas
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+| Tecnologia | Uso |
+| :--- | :--- |
+| **Angular** | Framework SPA principal para reatividade e roteamento |
+| **TypeScript** | Superset JavaScript para tipagem estática |
+| **Supabase Client** | Gerenciamento de sessão, login e registro (Auth) |
+| **TailwindCSS** *(Exemplo)* | Estilização utilitária e design responsivo |
 
-```bash
-ng generate component component-name
-```
+## 🚀 Como Executar o Projeto Localmente
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+1. Clone o repositório:
+   ```bash
+   git clone [URL_DO_SEU_REPOSITORIO_FRONTEND]
 
-```bash
-ng generate --help
-```
+2. Instale as dependências:
+    npm install
 
-## Building
+3. Crie um arquivo de ambiente (ex: environment.ts) e configure as chaves públicas do seu backend e do Supabase:
+    export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:8080/api',
+  supabaseUrl: 'SUA_URL_SUPABASE',
+  supabaseKey: 'SUA_CHAVE_ANON_SUPABASE'
+};
 
-To build the project run:
+4. Suba o servidor de desenvolvimento:
+    ng serve
 
-```bash
-ng build
-```
+A aplicação estará disponível em http://localhost:4200
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

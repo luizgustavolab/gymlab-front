@@ -1,34 +1,374 @@
 @if (exibirBanner()) {
-  <div class="fixed inset-0 z-[9999] bg-slate-950/80 backdrop-blur-md w-screen h-screen"
-       style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(2, 6, 23, 0.8); backdrop-filter: blur(12px); z-index: 9999;">
-    
-    <div class="w-[calc(100%-2rem)] max-w-md p-6 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl text-slate-200"
-         style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: calc(100% - 2rem); max-w: 28rem; padding: 1.5rem; background-color: #0f172a; border: 1px solid #1e293b; border-radius: 1rem; color: #e2e8f0; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);">
-      
-      <div class="text-center space-y-3" style="text-align: center; margin-bottom: 1.5rem;">
-        <h3 class="text-lg font-bold text-white flex items-center justify-center gap-2" style="font-size: 1.125rem; font-weight: 700; color: #ffffff; margin-bottom: 0.75rem;">
-          <span>🍪</span> Privacidade e Consentimento
-        </h3>
-        <p class="text-xs sm:text-sm text-slate-400 leading-relaxed" style="font-size: 0.875rem; color: #94a3b8; line-height: 1.625;">
-          Coletamos dados de conformidade (logs de consentimento e IP mascarado) para garantir a segurança da sua conta e aprimorar sua experiência de treino no GymLab, em total conformidade com a LGPD.
-        </p>
-      </div>
 
-      <div class="flex flex-col w-full" style="display: flex; flex-direction: column; width: 100%;">
-        <button (click)="computarConsentimento(true)" class="w-full px-6 py-3 text-sm font-semibold bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-xl shadow-lg transition-all cursor-pointer text-center min-h-[48px] flex items-center justify-center"
-                style="width: 100%; padding: 0.75rem 1.5rem; font-size: 0.875rem; font-weight: 600; background-color: #10b981; color: #020617; border-radius: 0.75rem; border: none; cursor: pointer; text-align: center;">
+  <div class="lgpd-overlay">
+
+    <div class="lgpd-modal">
+
+      <h2 class="lgpd-title">
+        🍪 Privacidade e Consentimento
+      </h2>
+
+      <p class="lgpd-text">
+        Coletamos logs mínimos de consentimento para autenticação,
+        segurança e conformidade LGPD.
+      </p>
+
+      <div class="button-group">
+
+        <button
+          class="btn-primary"
+          (click)="computarConsentimento(true)">
+
           Aceitar todos
         </button>
-        
-        <button (click)="computarConsentimento(false)" class="w-full px-5 py-3 text-sm font-medium text-slate-400 hover:text-white rounded-xl transition-all cursor-pointer text-center"
-                style="width: 100%; margin-top: 1rem; padding: 0.75rem 1.25rem; font-size: 0.875rem; font-weight: 500; color: #94a3b8; background: transparent; border-radius: 0.75rem; border: none; cursor: pointer; text-align: center;">
-          Recusar opcionaiiiiis
+
+        <button
+          class="btn-secondary"
+          (click)="computarConsentimento(false)">
+
+          Recusar opcionais
         </button>
+      </div>
+    </div>
+  </div>
+}
+
+<div class="app-container">
+
+  <!-- ===================================================== -->
+  <!-- ALERTAS -->
+  <!-- ===================================================== -->
+
+  @if (mensagemErro()) {
+
+    <div class="card">
+
+      <div class="alert-error">
+        {{ mensagemErro() }}
       </div>
 
     </div>
+  }
 
-  </div>
-}
+  @if (mensagemSucesso()) {
+
+    <div class="card">
+
+      <div class="alert-success">
+        {{ mensagemSucesso() }}
+      </div>
+
+    </div>
+  }
+
+  <!-- ===================================================== -->
+  <!-- AUTH -->
+  <!-- ===================================================== -->
+
+  @if (view() === 'AUTH') {
+
+    <div class="card">
+
+      <h1 class="logo">
+        GYMLAB
+      </h1>
+
+      <p class="subtitle">
+        IA + treino inteligente + performance
+      </p>
+
+      <div class="button-group">
+
+        <button
+          class="btn-primary"
+          (click)="irPara('LOGIN')">
+
+          Entrar
+        </button>
+
+        <button
+          class="btn-secondary"
+          (click)="irPara('REGISTER')">
+
+          Criar conta
+        </button>
+
+        <button
+          class="btn-link"
+          (click)="irPara('RECOVER')">
+
+          Esqueci minha senha
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- ===================================================== -->
+  <!-- LOGIN -->
+  <!-- ===================================================== -->
+
+  @if (view() === 'LOGIN') {
+
+    <div class="card">
+
+      <h2 class="title">
+        Login
+      </h2>
+
+      <form
+        [formGroup]="formLogin"
+        (ngSubmit)="login()"
+        class="form-group">
+
+        <input
+          class="input"
+          formControlName="email"
+          type="email"
+          autocomplete="email"
+          placeholder="E-mail">
+
+        <input
+          class="input"
+          formControlName="senha"
+          type="password"
+          autocomplete="current-password"
+          placeholder="Senha">
+
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="carregando()">
+
+          {{
+            carregando()
+              ? 'Entrando...'
+              : 'Entrar'
+          }}
+        </button>
+
+        <button
+          type="button"
+          class="btn-link"
+          (click)="irPara('AUTH')">
+
+          Voltar
+        </button>
+      </form>
+    </div>
+  }
+
+  <!-- ===================================================== -->
+  <!-- RECOVER -->
+  <!-- ===================================================== -->
+
+  @if (view() === 'RECOVER') {
+
+    <div class="card">
+
+      <h2 class="title">
+        Recuperar senha
+      </h2>
+
+      <form
+        [formGroup]="formRecover"
+        (ngSubmit)="recuperarSenha()"
+        class="form-group">
+
+        <input
+          class="input"
+          formControlName="email"
+          type="email"
+          placeholder="Seu e-mail">
+
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="carregando()">
+
+          {{
+            carregando()
+              ? 'Enviando...'
+              : 'Enviar recuperação'
+          }}
+        </button>
+
+        <button
+          type="button"
+          class="btn-link"
+          (click)="irPara('AUTH')">
+
+          Voltar
+        </button>
+      </form>
+    </div>
+  }
+
+  <!-- ===================================================== -->
+  <!-- REGISTER -->
+  <!-- ===================================================== -->
+
+  @if (view() === 'REGISTER') {
+
+    <div class="card">
+
+      <h2 class="title">
+        Criar conta
+      </h2>
+
+      <form
+        [formGroup]="formCadastro"
+        (ngSubmit)="enviarCadastroUnificado()"
+        class="form-group">
+
+        <input
+          class="input"
+          formControlName="nome"
+          type="text"
+          placeholder="Nome completo">
+
+        <input
+          class="input"
+          formControlName="email"
+          type="email"
+          autocomplete="email"
+          placeholder="E-mail">
+
+        <input
+          class="input"
+          formControlName="senha"
+          type="password"
+          autocomplete="new-password"
+          placeholder="Senha">
+
+        <div class="row">
+
+          <select
+            class="select"
+            formControlName="genero">
+
+            <option value="">
+              Gênero
+            </option>
+
+            @for (g of opcoesGenero; track g) {
+
+              <option [value]="g">
+                {{ g }}
+              </option>
+            }
+          </select>
+
+          <select
+            class="select"
+            formControlName="peso">
+
+            @for (p of pesos; track p) {
+
+              <option [value]="p">
+                {{ p }} kg
+              </option>
+            }
+          </select>
+        </div>
+
+        <select
+          class="select"
+          formControlName="altura">
+
+          @for (a of alturas; track a) {
+
+            <option [value]="a">
+              {{ a }} m
+            </option>
+          }
+        </select>
+
+        <select
+          class="select"
+          formControlName="objetivo">
+
+          <option value="">
+            Objetivo
+          </option>
+
+          @for (o of opcoesObjetivo; track o) {
+
+            <option [value]="o">
+              {{ o }}
+            </option>
+          }
+        </select>
+
+        <input
+          class="input"
+          formControlName="diasPorSemana"
+          type="number"
+          min="1"
+          max="7"
+          placeholder="Dias de treino por semana">
+
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="formCadastro.invalid || carregando()">
+
+          {{
+            carregando()
+              ? 'Processando...'
+              : 'Finalizar cadastro'
+          }}
+        </button>
+
+        <button
+          type="button"
+          class="btn-link"
+          (click)="irPara('AUTH')">
+
+          Voltar
+        </button>
+      </form>
+    </div>
+  }
+
+  <!-- ===================================================== -->
+  <!-- DASHBOARD -->
+  <!-- ===================================================== -->
+
+  @if (view() === 'CONFIG') {
+
+    <div class="card">
+
+      <h2 class="title">
+        Dashboard
+      </h2>
+
+      <p class="subtitle">
+        Usuário autenticado com sucesso.
+      </p>
+
+      <div class="button-group">
+
+        <button
+          class="btn-primary">
+
+          Meu treino
+        </button>
+
+        <button
+          class="btn-secondary">
+
+          Ajustar treino IA
+        </button>
+
+        <button
+          class="btn-secondary"
+          (click)="logout()">
+
+          Sair
+        </button>
+      </div>
+    </div>
+  }
+</div>
 
 <router-outlet />
