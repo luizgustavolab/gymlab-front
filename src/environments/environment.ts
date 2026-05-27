@@ -5,6 +5,6 @@ export const environment = {
 
   supabase: {
     url: 'https://fvogijcayhkgsbczneio.supabase.co',
-    anonKey: 'SUA_ANON_KEY'
+    anonKey: 'sb_publishable_2gCzsO6MVxr7Lscihok6JQ_XPi6xq81'
   }
 };

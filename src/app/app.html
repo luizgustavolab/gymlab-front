@@ -28,8 +28,11 @@
 
           Recusar opcionais
         </button>
+
       </div>
+
     </div>
+
   </div>
 }
 
@@ -67,7 +70,7 @@
 
   @if (view() === 'AUTH') {
 
-    <div class="card">
+    <div class="card auth-card">
 
       <h1 class="logo">
         GYMLAB
@@ -99,7 +102,9 @@
 
           Esqueci minha senha
         </button>
+
       </div>
+
     </div>
   }
 
@@ -144,16 +149,41 @@
               ? 'Entrando...'
               : 'Entrar'
           }}
+
         </button>
 
-        <button
-          type="button"
-          class="btn-link"
-          (click)="irPara('AUTH')">
+        <!-- BOTÕES EMPILHADOS -->
 
-          Voltar
-        </button>
+        <div class="stack-buttons">
+
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="irPara('REGISTER')">
+
+            Criar conta
+          </button>
+
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="irPara('RECOVER')">
+
+            Esqueci minha senha
+          </button>
+
+          <button
+            type="button"
+            class="btn-link"
+            (click)="irPara('AUTH')">
+
+            Voltar
+          </button>
+
+        </div>
+
       </form>
+
     </div>
   }
 
@@ -190,16 +220,23 @@
               ? 'Enviando...'
               : 'Enviar recuperação'
           }}
+
         </button>
 
-        <button
-          type="button"
-          class="btn-link"
-          (click)="irPara('AUTH')">
+        <div class="stack-buttons">
 
-          Voltar
-        </button>
+          <button
+            type="button"
+            class="btn-link"
+            (click)="irPara('AUTH')">
+
+            Voltar
+          </button>
+
+        </div>
+
       </form>
+
     </div>
   }
 
@@ -209,7 +246,7 @@
 
   @if (view() === 'REGISTER') {
 
-    <div class="card">
+    <div class="card register-card">
 
       <h2 class="title">
         Criar conta
@@ -256,6 +293,7 @@
                 {{ g }}
               </option>
             }
+
           </select>
 
           <select
@@ -268,7 +306,9 @@
                 {{ p }} kg
               </option>
             }
+
           </select>
+
         </div>
 
         <select
@@ -281,6 +321,7 @@
               {{ a }} m
             </option>
           }
+
         </select>
 
         <select
@@ -297,6 +338,7 @@
               {{ o }}
             </option>
           }
+
         </select>
 
         <input
@@ -317,16 +359,23 @@
               ? 'Processando...'
               : 'Finalizar cadastro'
           }}
+
         </button>
 
-        <button
-          type="button"
-          class="btn-link"
-          (click)="irPara('AUTH')">
+        <div class="stack-buttons">
 
-          Voltar
-        </button>
+          <button
+            type="button"
+            class="btn-link"
+            (click)="irPara('AUTH')">
+
+            Voltar
+          </button>
+
+        </div>
+
       </form>
+
     </div>
   }
 
@@ -366,9 +415,12 @@
 
           Sair
         </button>
+
       </div>
+
     </div>
   }
+
 </div>
 
 <router-outlet />
