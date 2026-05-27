@@ -1,5 +1,5 @@
 /* =========================================================
-   RESET
+   APP ROOT
 ========================================================= */
 
 :host {
@@ -8,252 +8,50 @@
 }
 
 /* =========================================================
-   BODY PRINCIPAL
+   RESET GLOBAL
 ========================================================= */
 
-.app-container {
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* =========================================================
+   BODY BASE
+========================================================= */
+
+html,
+body {
   min-height: 100vh;
+
   background:
     radial-gradient(circle at top, #0f172a 0%, #020617 70%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  font-family: Inter, sans-serif;
-  color: white;
+
+  color: #ffffff;
+
+  font-family:
+    Inter,
+    system-ui,
+    sans-serif;
+
+  overflow-x: hidden;
 }
 
 /* =========================================================
-   CARD
+   BUTTON RESET
 ========================================================= */
 
-.card {
-  width: 100%;
-  max-width: 420px;
-  background: rgba(15, 23, 42, 0.9);
-  border: 1px solid #1e293b;
-  border-radius: 28px;
-  padding: 36px;
-  backdrop-filter: blur(18px);
-  box-shadow:
-    0 10px 40px rgba(0, 0, 0, 0.5);
-
-    display: flex;
-  flex-direction: column;
-  gap: 18px;
-
+button {
+  font-family: inherit;
 }
 
 /* =========================================================
-   TÍTULOS
+   INPUT RESET
 ========================================================= */
 
-.logo {
-  font-size: 3rem;
-  font-weight: 900;
-  text-align: center;
-  color: #10b981;
-  letter-spacing: -2px;
-  margin-bottom: 12px;
-}
-
-.subtitle {
-  text-align: center;
-  color: #94a3b8;
-  margin-bottom: 32px;
-  font-size: 0.95rem;
-}
-
-.title {
-  font-size: 2rem;
-  font-weight: 800;
-  text-align: center;
-  margin-bottom: 24px;
-}
-
-/* =========================================================
-   FORM
-========================================================= */
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  width: 100%;
-}
-
-.row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-
-/* =========================================================
-   INPUTS
-========================================================= */
-
-.input,
-.select {
-  width: 100%;
-  padding: 16px;
-  background: #020617;
-  border: 1px solid #1e293b;
-  border-radius: 18px;
-  color: white;
-  font-size: 1rem;
-  outline: none;
-  box-sizing: border-box;
-}
-
-.input:focus,
-.select:focus {
-  border-color: #10b981;
-}
-
-/* =========================================================
-   BOTÕES
-========================================================= */
-
-.button-group {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  margin-top: 28px;
-  width: 100%;
-}
-
-.btn-primary {
-  width: 100%;
-  border: none;
-  border-radius: 18px;
-  padding: 18px;
-  font-size: 1rem;
-  font-weight: 800;
-  cursor: pointer;
-  transition: 0.2s;
-  background: #10b981;
-  color: #020617;
-}
-
-.btn-primary:hover {
-  background: #34d399;
-}
-
-.btn-secondary {
-  width: 100%;
-  border: none;
-  border-radius: 18px;
-  padding: 18px;
-  font-size: 1rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: 0.2s;
-  background: #1e293b;
-  color: white;
-}
-
-.btn-secondary:hover {
-  background: #334155;
-}
-
-.btn-link {
-  border: none;
-  background: transparent;
-  color: #94a3b8;
-  cursor: pointer;
-  margin-top: 8px;
-  font-size: 0.95rem;
-}
-
-.btn-link:hover {
-  color: white;
-}
-
-.stack-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  margin-top: 10px;
-}
-
-/* =========================================================
-   ALERTAS
-========================================================= */
-
-.alert-error {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.4);
-  color: #fca5a5;
-  padding: 14px;
-  border-radius: 16px;
-  margin-bottom: 18px;
-  text-align: center;
-}
-
-.alert-success {
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  color: #6ee7b7;
-  padding: 14px;
-  border-radius: 16px;
-  margin-bottom: 18px;
-  text-align: center;
-}
-
-/* =========================================================
-   LGPD MODAL
-========================================================= */
-
-.lgpd-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(2, 6, 23, 0.9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  z-index: 9999;
-  backdrop-filter: blur(10px);
-}
-
-.lgpd-modal {
-  width: 100%;
-  max-width: 420px;
-  background: #0f172a;
-  border: 1px solid #1e293b;
-  border-radius: 28px;
-  padding: 32px;
-}
-
-.lgpd-title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  text-align: center;
-  margin-bottom: 16px;
-}
-
-.lgpd-text {
-  text-align: center;
-  color: #94a3b8;
-  line-height: 1.6;
-  margin-bottom: 24px;
-}
-
-/* =========================================================
-   RESPONSIVO
-========================================================= */
-
-@media (max-width: 480px) {
-
-  .card {
-    padding: 24px;
-  }
-
-  .row {
-    grid-template-columns: 1fr;
-  }
-
-  .logo {
-    font-size: 2.4rem;
-  }
+input,
+select,
+textarea {
+  font-family: inherit;
 }

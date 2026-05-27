@@ -1,0 +1,204 @@
+<div class="profile-container">
+
+  <!-- ===================================================== -->
+  <!-- SIDEBAR -->
+  <!-- ===================================================== -->
+
+  <app-sidebar
+    usuarioNome="Perfil"
+    treinoHoje="Perfil"
+    (logoutClick)="logout()"
+    (perfilClick)="irDashboard()">
+
+  </app-sidebar>
+
+  <!-- ===================================================== -->
+  <!-- CONTENT -->
+  <!-- ===================================================== -->
+
+  <main class="profile-content">
+
+    <div class="profile-card">
+
+      <div class="profile-header">
+
+        <h1>
+          Meu Perfil
+        </h1>
+
+        <p>
+          Configure seus dados físicos e preferências
+          para melhorar a IA dos treinos.
+        </p>
+
+      </div>
+
+      <form
+        [formGroup]="formPerfil"
+        (ngSubmit)="salvarPerfil()"
+        class="profile-form">
+
+        <!-- NOME -->
+
+        <div class="field">
+
+          <label>
+            Nome
+          </label>
+
+          <input
+            class="input"
+            type="text"
+            formControlName="nome"
+            placeholder="Seu nome">
+
+        </div>
+
+        <!-- EMAIL -->
+
+        <div class="field">
+
+          <label>
+            E-mail
+          </label>
+
+          <input
+            class="input"
+            type="email"
+            formControlName="email"
+            placeholder="Seu e-mail">
+
+        </div>
+
+        <!-- GENERO -->
+
+        <div class="field">
+
+          <label>
+            Gênero
+          </label>
+
+          <select
+            class="select"
+            formControlName="genero">
+
+            <option value="">
+              Selecione
+            </option>
+
+            <option value="MASCULINO">
+              Masculino
+            </option>
+
+            <option value="FEMININO">
+              Feminino
+            </option>
+
+          </select>
+
+        </div>
+
+        <!-- PESO -->
+
+        <div class="field">
+
+          <label>
+            Peso (kg)
+          </label>
+
+          <input
+            class="input"
+            type="number"
+            formControlName="peso"
+            min="30"
+            max="300">
+
+        </div>
+
+        <!-- ALTURA -->
+
+        <div class="field">
+
+          <label>
+            Altura (m)
+          </label>
+
+          <input
+            class="input"
+            type="number"
+            step="0.01"
+            formControlName="altura">
+
+        </div>
+
+        <!-- OBJETIVO -->
+
+        <div class="field">
+
+          <label>
+            Objetivo
+          </label>
+
+          <select
+            class="select"
+            formControlName="objetivo">
+
+            <option value="">
+              Selecione
+            </option>
+
+            <option value="Hipertrofia">
+              Hipertrofia
+            </option>
+
+            <option value="Emagrecimento">
+              Emagrecimento
+            </option>
+
+            <option value="Força">
+              Força
+            </option>
+
+            <option value="Condicionamento">
+              Condicionamento
+            </option>
+
+          </select>
+
+        </div>
+
+        <!-- DIAS -->
+
+        <div class="field">
+
+          <label>
+            Dias de treino por semana
+          </label>
+
+          <input
+            class="input"
+            type="number"
+            min="1"
+            max="7"
+            formControlName="diasPorSemana">
+
+        </div>
+
+        <!-- BUTTON -->
+
+        <button
+          type="submit"
+          class="save-button"
+          [disabled]="formPerfil.invalid">
+
+          Salvar perfil
+
+        </button>
+
+      </form>
+
+    </div>
+
+  </main>
+
+</div>

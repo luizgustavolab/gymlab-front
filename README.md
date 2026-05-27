@@ -1,117 +1,35 @@
-### 2. README do Frontend (Repositório do Angular - a criar)
-
-```markdown
 # GymLab Web 🏋️‍♂️🖥️
 
-GymLab Web é a interface (SPA) desenvolvida para academias e alunos gerenciarem seus treinos, cadastrarem perfis biométricos e visualizarem as fichas inteligentes geradas por Inteligência Artificial.
-
-## 🧠 Arquitetura Front-end
-
-Este projeto atua exclusivamente como a camada de apresentação e interação do usuário, delegando processamentos pesados para a nossa API construída em Spring Boot. 
-
-O fluxo de autenticação utiliza o cliente nativo do **Supabase Auth** no client-side. Uma vez que o usuário faz login, o Angular intercepta o token JWT e o anexa no cabeçalho (Header) de todas as requisições HTTP (`HttpClient`) direcionadas à nossa API, garantindo a segurança estrita do ecossistema.
-
-## 🔧 Tecnologias Utilizadas
-
-| Tecnologia | Uso |
-| :--- | :--- |
-| **Angular** | Framework SPA principal para reatividade e roteamento |
-| **TypeScript** | Superset JavaScript para tipagem estática |
-| **Supabase Client** | Gerenciamento de sessão, login e registro (Auth) |
-| **TailwindCSS** *(Exemplo)* | Estilização utilitária e design responsivo |
-
-## 🚀 Como Executar o Projeto Localmente
-
-1. Clone o repositório:
-   ```bash
-   git clone [URL_DO_SEU_REPOSITORIO_FRONTEND]
-
-2. Instale as dependências:
-    npm install
-
-3. Crie um arquivo de ambiente (ex: environment.ts) e configure as chaves públicas do seu backend e do Supabase:
-    export const environment = {
-  production: false,
-  apiUrl: 'http://localhost:8080/api',
-  supabaseUrl: 'SUA_URL_SUPABASE',
-  supabaseKey: 'SUA_CHAVE_ANON_SUPABASE'
-};
-
-4. Suba o servidor de desenvolvimento:
-    ng serve
-
-A aplicação estará disponível em http://localhost:4200
-
-
-## ✅ Funcionalidades Implementadas
-
-### 🔐 Autenticação Segura
-
-O frontend utiliza o `Supabase Auth` para gerenciamento completo de autenticação:
-
-- Login com e-mail/senha
-- Registro de novos usuários
-- Recuperação de senha
-- Persistência automática de sessão
-- Logout seguro
-- JWT automático para autenticação no backend Java
+GymLab Web é a SPA (Single Page Application) do ecossistema GymLab, desenvolvida em Angular para academias e alunos gerenciarem treinos inteligentes, autenticação segura, métricas biométricas e fichas automatizadas por Inteligência Artificial.
 
 ---
 
-### 🛡️ Conformidade LGPD
+# 🧠 Arquitetura Front-end
 
-A aplicação implementa um fluxo inicial de consentimento de cookies e privacidade:
+O frontend atua exclusivamente como camada de apresentação, autenticação e experiência do usuário.
 
-- Banner de consentimento obrigatório
-- Registro local do aceite/rejeição
-- Armazenamento mínimo para conformidade
-- Separação entre cookies essenciais e opcionais
+Toda a lógica crítica, processamento IA, persistência e segurança avançada são delegados ao backend Java/Spring Boot.
 
----
-
-### 🤖 Integração com Inteligência Artificial
-
-Durante o cadastro, o usuário informa dados biométricos e objetivos de treino.
-
-Esses dados são enviados para a API Java (`Spring Boot`), que:
-
-1. Valida o JWT do usuário autenticado
-2. Processa os parâmetros físicos
-3. Consulta a IA via Ollama
-4. Gera automaticamente uma ficha personalizada
-5. Persiste os treinos vinculados ao usuário
+O fluxo de autenticação utiliza o cliente nativo do Supabase Auth no client-side. Após autenticação, o JWT é automaticamente utilizado para comunicação segura com a API.
 
 ---
 
-### 📱 Interface Mobile-First
-
-A interface foi construída priorizando dispositivos móveis:
-
-- Layout centralizado
-- Componentização leve
-- UX simplificada
-- Inputs otimizados para touch
-- Design dark mode moderno
-- Estrutura SPA responsiva
-
----
-
-## 🔄 Fluxo Completo da Aplicação
+# 🔐 Fluxo Arquitetural
 
 ```txt
 Usuário
    ↓
-Consentimento LGPD
+Banner LGPD
    ↓
 Supabase Auth
    ↓
 JWT
    ↓
-Angular HttpClient
+Angular Services
    ↓
 Spring Security
    ↓
-API Java
+API Java Spring Boot
    ↓
 Ollama AI
    ↓
@@ -120,84 +38,333 @@ Supabase Database
 
 ---
 
-## 🔐 Segurança da Aplicação
+# 🔧 Tecnologias Utilizadas
 
-O frontend foi projetado para não expor credenciais críticas.
-
-### Medidas implementadas:
-
-- Uso exclusivo da `anon key` do Supabase no client-side
-- Nenhuma chave privada exposta no navegador
-- JWT validado exclusivamente no backend
-- Processamento IA isolado no servidor Java
-- Sem acesso direto do frontend ao banco de dados
-- Headers Authorization com Bearer Token
-- Sessões gerenciadas pelo Supabase Auth
+| Tecnologia | Uso |
+| :--- | :--- |
+| Angular 21 | Framework SPA principal |
+| TypeScript | Tipagem estática |
+| Angular Signals | Gerenciamento reativo de estado |
+| Angular Router | Rotas SPA |
+| Reactive Forms | Formulários reativos |
+| Supabase Auth | Login, registro e sessão |
+| TailwindCSS 4 | Estilização |
+| Spring Boot | Backend |
+| Spring Security | Validação JWT |
+| Ollama | Inteligência Artificial |
+| PostgreSQL/Supabase | Banco de dados |
 
 ---
 
-## 📂 Estrutura Atual do Projeto
+# 🚀 Como Executar o Projeto Localmente
+
+## 1. Clone o repositório
+
+```bash
+git clone [URL_DO_REPOSITORIO]
+```
+
+---
+
+## 2. Instale as dependências
+
+```bash
+npm install
+```
+
+---
+
+## 3. Configure o environment.ts
+
+Crie:
+
+```txt
+src/environments/environment.ts
+```
+
+Conteúdo:
+
+```ts
+export const environment = {
+  production: false,
+
+  apiUrl: 'http://localhost:8080/api',
+
+  supabaseUrl: 'SUA_URL_SUPABASE',
+
+  supabaseKey: 'SUA_ANON_KEY'
+};
+```
+
+---
+
+## 4. Suba o projeto
+
+```bash
+ng serve
+```
+
+Aplicação disponível em:
+
+```txt
+http://localhost:4200
+```
+
+---
+
+# 🔒 Segurança Implementada
+
+## Supabase Auth
+
+- Login seguro
+- Registro de usuários
+- Recuperação de senha
+- Sessão persistente
+- Logout seguro
+- JWT Authentication
+
+---
+
+## Spring Security
+
+O backend valida automaticamente os JWTs emitidos pelo Supabase.
+
+Endpoints protegidos utilizam:
+
+```txt
+Bearer Token
+```
+
+---
+
+## LGPD
+
+Fluxo inicial de consentimento implementado:
+
+- Modal obrigatório de consentimento
+- Aceite ou rejeição de cookies opcionais
+- Persistência local do consentimento
+- Registro backend do consentimento
+- Endpoint público específico para LGPD
+
+---
+
+# 🧩 Estrutura Atual do Projeto
 
 ```txt
 src/
  ├── app/
- │    ├── app.html
- │    ├── app.ts
- │    ├── app.css
+ │
+ │    ├── components/
+ │    │    ├── sidebar/
+ │    │    ├── workout-card/
+ │    │    └── exercise-item/
+ │    │
+ │    ├── guards/
+ │    │    └── auth.guard.ts
+ │    │
+ │    ├── pages/
+ │    │    ├── auth/
+ │    │    ├── dashboard/
+ │    │    └── profile/
+ │    │
+ │    ├── services/
+ │    │    ├── auth.ts
+ │    │    └── treino.ts
+ │    │
  │    ├── app.config.ts
+ │    ├── app.css
+ │    ├── app.html
+ │    ├── app.routes.ts
+ │    ├── app.ts
  │    └── supabase.ts
  │
  ├── environments/
  │    └── environment.ts
  │
- └── styles.css
+ ├── styles.css
+ │
+ ├── index.html
+ └── main.ts
 ```
 
 ---
 
-## 🧪 Estado Atual do Projeto
+# 📱 Interface e UX
 
-### Implementado
+A interface foi construída com foco em:
+
+- mobile-first
+- dark mode
+- centralização visual
+- UX simplificada
+- acessibilidade
+- componentes reutilizáveis
+- arquitetura limpa
+
+---
+
+# 🧠 Arquitetura Angular Atual
+
+O projeto está migrando de uma arquitetura monolítica para componentização desacoplada.
+
+## Objetivos arquiteturais
+
+- evitar boilerplate excessivo
+- manter Angular puro
+- evitar abstrações desnecessárias
+- manter clean code
+- preservar simplicidade
+- componentização leve
+- separação por domínio
+
+---
+
+# ✅ Funcionalidades Implementadas
+
+## 🔐 Autenticação
 
 - [x] Login
 - [x] Cadastro
+- [x] Logout
 - [x] Recuperação de senha
-- [x] Integração Supabase Auth
-- [x] Geração automática de treino IA
+- [x] Persistência de sessão
+- [x] Integração Supabase
+
+---
+
+## 🛡️ Segurança
+
 - [x] JWT Authentication
-- [x] Interface mobile-first
+- [x] Spring Security
+- [x] Route Guard inicial
 - [x] Consentimento LGPD
+- [x] Endpoint público LGPD
+- [x] Proteção de rotas privadas
+
+---
+
+## 🎨 Interface
+
+- [x] Dark mode moderno
+- [x] Layout responsivo
+- [x] Componentização inicial
+- [x] Sidebar estrutural
 - [x] Dashboard inicial
+- [x] Formulários reativos
+- [x] UX mobile-first
 
-### Em desenvolvimento
+---
 
-- [ ] Route Guards
+## 🤖 IA
+
+- [x] Cadastro biométrico
+- [x] Integração backend IA
+- [x] Geração automática de treino
+- [x] Comunicação Angular → API → Ollama
+
+---
+
+# 🚧 Dashboard em Desenvolvimento
+
+O novo dashboard será estruturado em:
+
+## Sidebar lateral
+
+- Perfil
+- Gerar treino IA
+- Histórico
+- Configurações
+- Logout
+
+---
+
+## Área principal
+
+### Exibição do treino do dia
+
+```txt
+Hoje é Segunda-feira
+Seu treino é: Costas + Bíceps
+```
+
+---
+
+## Lista de exercícios
+
+Cada exercício possuirá:
+
+- checkbox de conclusão
+- expansão dinâmica
+- séries
+- repetições
+- instruções
+- último peso utilizado
+- atualização manual de carga
+
+---
+
+# 🧪 Estado Atual do Projeto
+
+## Concluído
+
+- [x] Estrutura Angular modular
+- [x] Supabase Auth
+- [x] Spring Security JWT
+- [x] LGPD frontend/backend
+- [x] Componentização base
+- [x] Dashboard estrutural
+- [x] Guards iniciais
+- [x] Dark UI
+- [x] Rotas SPA
+
+---
+
+## Em andamento
+
+- [ ] Dashboard funcional completo
+- [ ] Sidebar dinâmica
+- [ ] Exercise Item Component
+- [ ] Workout Card Component
+- [ ] Histórico de treino
+- [ ] Atualização de carga
+- [ ] Persistência de progresso
 - [ ] Interceptor JWT automático
-- [ ] Dashboard completo
-- [ ] Histórico de treinos
-- [ ] Ajustes inteligentes de treino via IA
-- [ ] Upload de imagens corporais
-- [ ] Métricas biométricas
 - [ ] PWA
-- [ ] Deploy em produção
+- [ ] Deploy
 
 ---
 
-## ⚠️ Observações Importantes
+# ⚠️ Observações Técnicas
 
-Este projeto encontra-se em fase ativa de desenvolvimento.
+## environment.ts
 
-Algumas funcionalidades ainda estão sendo refinadas, incluindo:
+O arquivo:
 
-- arquitetura de rotas
-- persistência avançada de sessão
-- cache
-- tratamento global de erros
-- hardening de segurança
-- observabilidade/logging
+```txt
+src/environments/environment.ts
+```
+
+não deve ser commitado quando possuir credenciais reais.
+
+Adicionar ao `.gitignore`:
+
+```gitignore
+src/environments/environment.ts
+```
 
 ---
 
-## 📄 Licença
+## Segurança
 
-Projeto privado para fins de desenvolvimento, pesquisa e validação arquitetural.
+Mesmo utilizando a `anon key` do Supabase:
+
+- nenhuma chave sensível deve ir ao frontend
+- toda autorização real permanece no backend
+- JWTs são validados exclusivamente no Spring Security
+
+---
+
+# 📄 Licença
+
+Projeto privado para fins de desenvolvimento, pesquisa arquitetural e validação de integração IA + treino inteligente.

@@ -1,0 +1,379 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, #111827 0%, #020617 60%);
+  color: #f8fafc;
+  font-family:
+    Inter,
+    system-ui,
+    sans-serif;
+}
+
+/* ===================================================== */
+/* LAYOUT */
+/* ===================================================== */
+
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ===================================================== */
+/* SIDEBAR */
+/* ===================================================== */
+
+.sidebar {
+  width: 280px;
+  min-width: 280px;
+
+  background: rgba(15, 23, 42, 0.95);
+
+  border-right:
+    1px solid rgba(51, 65, 85, 0.6);
+
+  padding: 32px 24px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 0 40px rgba(0, 0, 0, 0.35);
+}
+
+.sidebar h2 {
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -1px;
+
+  color: #10b981;
+
+  margin-bottom: 28px;
+}
+
+/* ===================================================== */
+/* BOTÕES SIDEBAR */
+/* ===================================================== */
+
+.sidebar button {
+  width: 100%;
+
+  border: none;
+
+  border-radius: 16px;
+
+  padding: 16px 18px;
+
+  background: #111827;
+
+  color: #e2e8f0;
+
+  font-size: 0.95rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    border 0.2s ease;
+
+  border:
+    1px solid rgba(51, 65, 85, 0.7);
+}
+
+.sidebar button:hover {
+  background: #1e293b;
+
+  transform: translateY(-2px);
+
+  border-color: #10b981;
+}
+
+.sidebar button:last-child {
+  margin-top: auto;
+
+  background: rgba(239, 68, 68, 0.12);
+
+  border:
+    1px solid rgba(239, 68, 68, 0.4);
+
+  color: #fca5a5;
+}
+
+.sidebar button:last-child:hover {
+  background: rgba(239, 68, 68, 0.18);
+}
+
+/* ===================================================== */
+/* MAIN CONTENT */
+/* ===================================================== */
+
+.dashboard-content {
+  flex: 1;
+
+  padding:
+    48px 32px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 28px;
+}
+
+/* ===================================================== */
+/* HEADER */
+/* ===================================================== */
+
+.dashboard-content h1 {
+  font-size: 2.3rem;
+  font-weight: 900;
+
+  color: #ffffff;
+
+  line-height: 1.1;
+
+  margin: 0;
+}
+
+.dashboard-content h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+
+  color: #94a3b8;
+
+  margin-top: -10px;
+}
+
+/* ===================================================== */
+/* TREINO CARD */
+/* ===================================================== */
+
+.workout-card {
+  background:
+    rgba(15, 23, 42, 0.92);
+
+  border:
+    1px solid rgba(51, 65, 85, 0.7);
+
+  border-radius: 24px;
+
+  padding: 28px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+
+  backdrop-filter: blur(14px);
+
+  box-shadow:
+    0 10px 35px rgba(0, 0, 0, 0.28);
+}
+
+/* ===================================================== */
+/* EXERCÍCIO */
+/* ===================================================== */
+
+.exercise-item {
+  background:
+    rgba(2, 6, 23, 0.8);
+
+  border:
+    1px solid rgba(30, 41, 59, 0.9);
+
+  border-radius: 18px;
+
+  padding: 18px;
+
+  transition:
+    border 0.2s ease,
+    background 0.2s ease;
+}
+
+.exercise-item:hover {
+  border-color: #10b981;
+
+  background:
+    rgba(15, 23, 42, 0.95);
+}
+
+.exercise-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  cursor: pointer;
+}
+
+.exercise-name {
+  font-size: 1rem;
+  font-weight: 700;
+
+  color: #f8fafc;
+}
+
+.exercise-check {
+  width: 22px;
+  height: 22px;
+
+  accent-color: #10b981;
+
+  cursor: pointer;
+}
+
+/* ===================================================== */
+/* DETALHES */
+/* ===================================================== */
+
+.exercise-details {
+  margin-top: 18px;
+
+  padding-top: 18px;
+
+  border-top:
+    1px solid rgba(51, 65, 85, 0.5);
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+.exercise-meta {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 12px;
+}
+
+.exercise-badge {
+  background:
+    rgba(16, 185, 129, 0.12);
+
+  color: #6ee7b7;
+
+  border:
+    1px solid rgba(16, 185, 129, 0.25);
+
+  border-radius: 999px;
+
+  padding:
+    8px 12px;
+
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.exercise-instruction {
+  color: #cbd5e1;
+
+  line-height: 1.6;
+
+  font-size: 0.95rem;
+}
+
+/* ===================================================== */
+/* PESO */
+/* ===================================================== */
+
+.weight-form {
+  display: flex;
+  gap: 12px;
+
+  align-items: center;
+}
+
+.weight-input {
+  width: 120px;
+
+  background: #020617;
+
+  border:
+    1px solid #334155;
+
+  border-radius: 14px;
+
+  padding:
+    12px 14px;
+
+  color: #ffffff;
+
+  outline: none;
+}
+
+.weight-input:focus {
+  border-color: #10b981;
+}
+
+.save-weight-button {
+  border: none;
+
+  border-radius: 14px;
+
+  padding:
+    12px 18px;
+
+  background: #10b981;
+
+  color: #020617;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.save-weight-button:hover {
+  opacity: 0.92;
+
+  transform: translateY(-1px);
+}
+
+/* ===================================================== */
+/* RESPONSIVO */
+/* ===================================================== */
+
+@media (max-width: 900px) {
+
+  .dashboard-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-width: 100%;
+
+    border-right: none;
+
+    border-bottom:
+      1px solid rgba(51, 65, 85, 0.6);
+  }
+
+  .dashboard-content {
+    padding: 28px 18px;
+  }
+
+  .dashboard-content h1 {
+    font-size: 1.8rem;
+  }
+
+  .weight-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .weight-input {
+    width: 100%;
+  }
+}

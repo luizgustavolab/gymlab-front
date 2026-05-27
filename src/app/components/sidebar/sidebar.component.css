@@ -1,0 +1,117 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.sidebar {
+  width: 280px;
+  min-height: 100vh;
+
+  background:
+    rgba(15, 23, 42, 0.96);
+
+  border-right:
+    1px solid rgba(51, 65, 85, 0.6);
+
+  padding: 32px 22px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  backdrop-filter: blur(18px);
+}
+
+.sidebar-header {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: 900;
+
+  color: #10b981;
+
+  letter-spacing: -1px;
+}
+
+.welcome {
+  color: #94a3b8;
+
+  font-size: 0.95rem;
+}
+
+.sidebar-buttons {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+.sidebar-button {
+  width: 100%;
+
+  border: none;
+
+  border-radius: 16px;
+
+  padding: 16px;
+
+  background: #111827;
+
+  color: #f8fafc;
+
+  font-size: 0.95rem;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.sidebar-button:hover {
+  background: #1e293b;
+
+  transform: translateY(-2px);
+}
+
+.primary {
+  background: #10b981;
+
+  color: #020617;
+}
+
+.primary:hover {
+  background: #34d399;
+}
+
+.logout {
+  background:
+    rgba(239, 68, 68, 0.15);
+
+  color: #fca5a5;
+}
+
+.logout:hover {
+  background:
+    rgba(239, 68, 68, 0.22);
+}
+
+@media (max-width: 900px) {
+
+  .sidebar {
+    width: 100%;
+    min-height: auto;
+
+    border-right: none;
+
+    border-bottom:
+      1px solid rgba(51, 65, 85, 0.6);
+  }
+}

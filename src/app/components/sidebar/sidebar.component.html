@@ -1,0 +1,40 @@
+<div class="sidebar">
+
+  <div class="sidebar-header">
+
+    <h2 class="logo">
+      GYMLAB
+    </h2>
+
+    <p class="welcome">
+      {{ usuarioNome }}
+    </p>
+
+  </div>
+
+  <div class="sidebar-buttons">
+
+    <button
+      class="sidebar-button primary"
+      (click)="gerarTreino()">
+
+      Gerar nova ficha IA
+    </button>
+
+    <button
+      class="sidebar-button"
+      (click)="abrirPerfil()">
+
+      Perfil
+    </button>
+
+    <button
+      class="sidebar-button logout"
+      (click)="logout()">
+
+      Sair
+    </button>
+
+  </div>
+
+</div>
