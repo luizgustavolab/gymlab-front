@@ -20,10 +20,6 @@ export class AuthService {
     this.observarAuth();
   }
 
-  /* ===================================================== */
-  /* SESSION */
-  /* ===================================================== */
-
   private async recuperarSessao(): Promise<void> {
 
     const {
@@ -52,10 +48,6 @@ export class AuthService {
       }
     );
   }
-
-  /* ===================================================== */
-  /* LOGIN */
-  /* ===================================================== */
 
   async login(
     email: string,
@@ -87,10 +79,6 @@ export class AuthService {
     }
   }
 
-  /* ===================================================== */
-  /* REGISTER */
-  /* ===================================================== */
-
   async registrar(
     email: string,
     senha: string
@@ -120,10 +108,6 @@ export class AuthService {
     }
   }
 
-  /* ===================================================== */
-  /* RECOVER */
-  /* ===================================================== */
-
   async recuperarSenha(
     email: string
   ): Promise<void> {
@@ -152,10 +136,6 @@ export class AuthService {
     }
   }
 
-  /* ===================================================== */
-  /* LOGOUT */
-  /* ===================================================== */
-
   async logout(): Promise<void> {
 
     await supabase.auth.signOut();
@@ -166,10 +146,6 @@ export class AuthService {
       '/'
     ]);
   }
-
-  /* ===================================================== */
-  /* AUTH CHECK */
-  /* ===================================================== */
 
   autenticado(): boolean {
 

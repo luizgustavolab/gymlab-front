@@ -341,9 +341,7 @@ export class AuthComponent implements OnInit {
       } =
         this.formCadastro.getRawValue();
 
-      /* ===================================== */
-      /* CADASTRO SUPABASE */
-      /* ===================================== */
+    
 
       const signUpResult =
         await supabase.auth
@@ -392,9 +390,6 @@ export class AuthComponent implements OnInit {
         return;
       }
 
-      /* ===================================== */
-      /* LOGIN AUTOMÁTICO */
-      /* ===================================== */
 
       const loginResult =
         await supabase.auth
@@ -419,9 +414,6 @@ export class AuthComponent implements OnInit {
         return;
       }
 
-      /* ===================================== */
-      /* TOKEN JWT */
-      /* ===================================== */
 
       const session =
         loginResult.data.session;
@@ -440,9 +432,6 @@ export class AuthComponent implements OnInit {
         return;
       }
 
-      /* ===================================== */
-      /* GERAÇÃO DO TREINO */
-      /* ===================================== */
 
       this.treinoService
         .gerarTreino(

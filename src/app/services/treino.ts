@@ -31,12 +31,7 @@ export class TreinoService {
   private apiUrl =
     environment.apiUrl;
 
-  /**
-   * =========================================
-   * HEADERS COM JWT
-   * =========================================
-   */
-
+ 
   private obterHeaders() {
 
     return from(
@@ -98,23 +93,13 @@ export class TreinoService {
     );
   }
 
-  /**
-   * =========================================
-   * GERA TREINO IA
-   * =========================================
-   */
-
+ 
   gerarTreino(
     payload: unknown,
     tokenManual?: string
   ) {
 
-    /**
-     * Caso o token venha manualmente
-     * do login/cadastro, evita race
-     * condition do Supabase.
-     */
-
+   
     if (tokenManual) {
 
       const headers =
@@ -134,11 +119,7 @@ export class TreinoService {
       );
     }
 
-    /**
-     * Fluxo padrão:
-     * busca token da sessão
-     */
-
+  
     return this.obterHeaders().pipe(
 
       switchMap(headers =>
@@ -152,12 +133,7 @@ export class TreinoService {
     );
   }
 
-  /**
-   * =========================================
-   * BUSCAR TREINO DO USUÁRIO
-   * =========================================
-   */
-
+  
   buscarMeuTreino() {
 
     return this.obterHeaders().pipe(
