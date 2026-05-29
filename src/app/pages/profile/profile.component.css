@@ -1,60 +1,72 @@
 :host {
+
   display: block;
-  min-height: 100vh;
 
-  background:
-    radial-gradient(circle at top, #111827 0%, #020617 70%);
+  min-height: 100dvh;
 
-  color: #ffffff;
+  color: #f8fafc;
 
   font-family:
     Inter,
     system-ui,
     sans-serif;
+
+  overflow-y: auto;
 }
 
 .profile-container {
+
   display: flex;
+
   min-height: 100vh;
 }
 
 .profile-content {
+
   flex: 1;
 
   display: flex;
 
   justify-content: center;
+
   align-items: flex-start;
 
   padding: 48px 28px;
 }
 
 .profile-card {
+
   width: 100%;
+
   max-width: 720px;
 
   background:
-    rgba(15, 23, 42, 0.94);
+    rgba(15, 23, 42, 0.20);
 
   border:
-    1px solid rgba(51, 65, 85, 0.6);
+    1px solid rgba(255, 255, 255, 0.10);
 
   border-radius: 28px;
 
   padding: 36px;
 
   box-shadow:
-    0 10px 40px rgba(0, 0, 0, 0.35);
+    0 10px 40px rgba(0, 0, 0, 0.24);
 
-  backdrop-filter: blur(18px);
+  backdrop-filter: blur(32px);
+
+  -webkit-backdrop-filter: blur(32px);
 }
 
 .profile-header {
+
   margin-bottom: 32px;
 }
 
 .profile-header h1 {
+
   font-size: 2.2rem;
+
   font-weight: 900;
 
   color: #ffffff;
@@ -63,43 +75,51 @@
 }
 
 .profile-header p {
-  color: #94a3b8;
+
+  color: #dbe4f0;
 
   line-height: 1.7;
 }
 
 .profile-form {
+
   display: flex;
+
   flex-direction: column;
 
   gap: 22px;
 }
 
 .field {
+
   display: flex;
+
   flex-direction: column;
 
   gap: 10px;
 }
 
 .field label {
+
   font-size: 0.92rem;
+
   font-weight: 700;
 
-  color: #cbd5e1;
+  color: #e2e8f0;
 }
 
 .input,
 .select {
+
   width: 100%;
 
   border:
-    1px solid rgba(51, 65, 85, 0.8);
+    1px solid rgba(255, 255, 255, 0.10);
 
   border-radius: 18px;
 
   background:
-    rgba(2, 6, 23, 0.95);
+    rgba(2, 6, 23, 0.30);
 
   color: #ffffff;
 
@@ -109,25 +129,35 @@
 
   outline: none;
 
+  backdrop-filter: blur(16px);
+
   transition:
     border 0.2s ease,
-    background 0.2s ease;
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .input:focus,
 .select:focus {
-  border-color: #10b981;
+
+  border-color: rgba(16, 185, 129, 0.75);
 
   background:
-    rgba(15, 23, 42, 1);
+    rgba(15, 23, 42, 0.45);
+
+  box-shadow:
+    0 0 0 4px rgba(16, 185, 129, 0.12);
 }
 
 .select option {
+
   background: #0f172a;
+
   color: #ffffff;
 }
 
 .save-button {
+
   width: 100%;
 
   border: none;
@@ -136,29 +166,38 @@
 
   padding: 18px;
 
-  background: #10b981;
+  background:
+    rgba(16, 185, 129, 0.28);
 
-  color: #020617;
+  color: #ffffff;
+
+  border:
+    1px solid rgba(16, 185, 129, 0.30);
 
   font-size: 1rem;
+
   font-weight: 800;
 
   cursor: pointer;
 
+  backdrop-filter: blur(18px);
+
   transition:
     opacity 0.2s ease,
-    transform 0.2s ease;
-
-  margin-top: 10px;
+    transform 0.2s ease,
+    background 0.2s ease;
 }
 
 .save-button:hover {
-  opacity: 0.92;
 
   transform: translateY(-2px);
+
+  background:
+    rgba(16, 185, 129, 0.38);
 }
 
 .save-button:disabled {
+
   opacity: 0.5;
 
   cursor: not-allowed;
@@ -169,18 +208,22 @@
 @media (max-width: 900px) {
 
   .profile-container {
+
     flex-direction: column;
   }
 
   .profile-content {
+
     padding: 24px 18px;
   }
 
   .profile-card {
+
     padding: 26px 20px;
   }
 
   .profile-header h1 {
+
     font-size: 1.8rem;
   }
 }

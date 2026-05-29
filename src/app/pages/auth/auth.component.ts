@@ -101,7 +101,13 @@ export class AuthComponent implements OnInit {
       senha: new FormControl('', [
         Validators.required,
         Validators.minLength(6)
-      ])
+      ]),
+
+      salvarCredenciais:
+        new FormControl(false),
+
+      manterConectado:
+        new FormControl(false)
     });
 
   protected formRecover =
@@ -154,11 +160,56 @@ export class AuthComponent implements OnInit {
         ])
     });
 
-  ngOnInit(): void {
+  async ngOnInit():
+    Promise<void> {
 
     if (!this.exibirBanner()) {
 
       this.view.set('AUTH');
+    }
+
+    const emailSalvo =
+      localStorage.getItem(
+        'gymlab_email'
+      );
+
+    const senhaSalva =
+      localStorage.getItem(
+        'gymlab_senha'
+      );
+
+    const manterConectado =
+      localStorage.getItem(
+        'gymlab_manter_conectado'
+      ) === 'true';
+
+    if (
+      emailSalvo &&
+      senhaSalva
+    ) {
+
+      this.formLogin.patchValue({
+
+        email: emailSalvo,
+        senha: senhaSalva,
+        salvarCredenciais: true,
+        manterConectado
+      });
+    }
+
+    if (manterConectado) {
+
+      const {
+        data
+      } = await supabase.auth
+        .getSession();
+
+      if (data.session) {
+
+        this.router.navigate([
+          '/dashboard'
+        ]);
+      }
     }
   }
 
@@ -239,7 +290,9 @@ export class AuthComponent implements OnInit {
 
     const {
       email,
-      senha
+      senha,
+      salvarCredenciais,
+      manterConectado
     } = this.formLogin.getRawValue();
 
     const {
@@ -263,6 +316,36 @@ export class AuthComponent implements OnInit {
 
       return;
     }
+
+    if (salvarCredenciais) {
+
+      localStorage.setItem(
+        'gymlab_email',
+        email!
+      );
+
+      localStorage.setItem(
+        'gymlab_senha',
+        senha!
+      );
+
+    } else {
+
+      localStorage.removeItem(
+        'gymlab_email'
+      );
+
+      localStorage.removeItem(
+        'gymlab_senha'
+      );
+    }
+
+    localStorage.setItem(
+      'gymlab_manter_conectado',
+      String(
+        manterConectado
+      )
+    );
 
     this.carregando.set(false);
 
@@ -341,8 +424,6 @@ export class AuthComponent implements OnInit {
       } =
         this.formCadastro.getRawValue();
 
-    
-
       const signUpResult =
         await supabase.auth
           .signUp({
@@ -390,7 +471,6 @@ export class AuthComponent implements OnInit {
         return;
       }
 
-
       const loginResult =
         await supabase.auth
           .signInWithPassword({
@@ -414,6 +494,20 @@ export class AuthComponent implements OnInit {
         return;
       }
 
+      localStorage.setItem(
+        'gymlab_email',
+        email!
+      );
+
+      localStorage.setItem(
+        'gymlab_senha',
+        senha!
+      );
+
+      localStorage.setItem(
+        'gymlab_manter_conectado',
+        'true'
+      );
 
       const session =
         loginResult.data.session;
@@ -431,7 +525,6 @@ export class AuthComponent implements OnInit {
 
         return;
       }
-
 
       this.treinoService
         .gerarTreino(

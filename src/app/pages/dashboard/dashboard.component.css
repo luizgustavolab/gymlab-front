@@ -4,13 +4,13 @@
 
   min-height: 100vh;
 
-  background: #0f172a;
-
   color: white;
 
   padding: 24px;
 
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    Inter,
+    sans-serif;
 }
 
 .dashboard-container {
@@ -55,50 +55,77 @@ button {
 
   padding: 12px 18px;
 
-  border-radius: 10px;
+  border-radius: 14px;
 
   cursor: pointer;
 
   font-weight: bold;
 
-  transition: 0.2s;
+  transition:
+    0.2s ease;
 }
 
 button:hover {
 
-  opacity: 0.9;
+  opacity: 0.94;
+
+  transform: translateY(-2px);
 }
 
 .refresh-btn {
 
-  background: #2563eb;
+  background:
+    rgba(37, 99, 235, 0.26);
 
   color: white;
+
+  border:
+    1px solid rgba(96, 165, 250, 0.22);
+
+  backdrop-filter: blur(18px);
 }
 
 .logout-btn {
 
-  background: #dc2626;
+  background:
+    rgba(220, 38, 38, 0.22);
 
   color: white;
+
+  border:
+    1px solid rgba(248, 113, 113, 0.20);
+
+  backdrop-filter: blur(18px);
 }
 
 .loading-box,
 .error-box,
 .empty-box {
 
-  background: #1e293b;
+  background:
+    rgba(15, 23, 42, 0.20);
+
+  backdrop-filter: blur(28px);
+
+  -webkit-backdrop-filter: blur(28px);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.08);
 
   padding: 24px;
 
-  border-radius: 16px;
+  border-radius: 20px;
 
   margin-bottom: 24px;
+
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.18);
 }
 
 .error-box {
 
-  border: 1px solid #ef4444;
+  border:
+    1px solid rgba(239, 68, 68, 0.28);
 }
 
 .dia-section {
@@ -112,7 +139,7 @@ button:hover {
 
   font-size: 24px;
 
-  color: #38bdf8;
+  color: #7dd3fc;
 }
 
 .cards-grid {
@@ -127,9 +154,14 @@ button:hover {
 
 .treino-card {
 
-  background: #1e293b;
+  background:
+    rgba(15, 23, 42, 0.18);
 
-  border-radius: 18px;
+  backdrop-filter: blur(30px);
+
+  -webkit-backdrop-filter: blur(30px);
+
+  border-radius: 22px;
 
   padding: 20px;
 
@@ -139,14 +171,22 @@ button:hover {
 
   gap: 10px;
 
-  border: 1px solid #334155;
+  border:
+    1px solid rgba(255, 255, 255, 0.08);
+
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.18);
 }
 
 .grupo {
 
   display: inline-block;
 
-  background: #2563eb;
+  background:
+    rgba(37, 99, 235, 0.24);
+
+  border:
+    1px solid rgba(96, 165, 250, 0.18);
 
   padding: 6px 10px;
 
@@ -155,6 +195,8 @@ button:hover {
   font-size: 12px;
 
   width: fit-content;
+
+  backdrop-filter: blur(12px);
 }
 
 .treino-card h3 {
@@ -170,5 +212,88 @@ button:hover {
 
   padding-top: 10px;
 
-  border-top: 1px solid #334155;
+  border-top:
+    1px solid rgba(255, 255, 255, 0.08);
+
+  color: #dbe4f0;
+}
+
+.dashboard-title {
+
+width: 100%;
+
+text-align: center;
+
+font-size: 2.4rem;
+
+font-weight: 900;
+
+margin: 0;
+}
+
+.centered-box {
+
+display: flex;
+
+justify-content: center;
+
+align-items: center;
+
+text-align: center;
+
+min-height: 220px;
+}
+
+.treino-acesso-container {
+
+display: flex;
+
+flex-direction: column;
+
+align-items: center;
+
+justify-content: center;
+
+margin-bottom: 48px;
+}
+
+.treino-image {
+
+width: 280px;
+
+max-width: 90%;
+
+cursor: pointer;
+
+transition:
+transform 0.2s ease,
+opacity 0.2s ease;
+}
+
+.treino-image:hover {
+
+transform: scale(1.03);
+
+opacity: 0.92;
+}
+
+.treino-link-text {
+
+margin-top: 18px;
+
+font-size: 1rem;
+
+font-weight: 700;
+
+color: #10b981;
+
+cursor: pointer;
+
+transition:
+opacity 0.2s ease;
+}
+
+.treino-link-text:hover {
+
+opacity: 0.8;
 }

@@ -60,7 +60,6 @@
     </div>
   }
 
-
   @if (view() === 'AUTH') {
 
     <div class="card auth-card">
@@ -99,6 +98,21 @@
       </div>
 
     </div>
+
+    <footer class="auth-footer">
+
+      Criado por
+
+      <a
+        href="https://github.com/luizgustavolab"
+        target="_blank"
+        rel="noopener noreferrer">
+
+        luizgustavolab
+
+      </a>
+
+    </footer>
   }
 
   @if (view() === 'LOGIN') {
@@ -127,6 +141,34 @@
           type="password"
           autocomplete="current-password"
           placeholder="Senha">
+
+       <div class="login-options">
+
+  <label class="checkbox-wrapper">
+
+    <input
+      type="checkbox"
+      formControlName="salvarCredenciais">
+
+    <span>
+      Salvar e-mail e senha
+    </span>
+
+  </label>
+
+  <label class="checkbox-wrapper">
+
+    <input
+      type="checkbox"
+      formControlName="manterConectado">
+
+    <span>
+      Manter conectado
+    </span>
+
+  </label>
+
+</div>
 
         <button
           type="submit"
@@ -173,8 +215,6 @@
 
     </div>
   }
-
-
 
   @if (view() === 'RECOVER') {
 
@@ -225,7 +265,6 @@
     </div>
   }
 
-
   @if (view() === 'REGISTER') {
 
     <div class="card register-card">
@@ -234,7 +273,6 @@
         Criar conta
       </h2>
 
-      <!-- BOTÃO VOLTAR -->
       <button
         type="button"
         class="btn-link"
@@ -333,7 +371,6 @@
 
         </select>
 
-        <!-- SELECT 1-7 DIAS -->
         <select
           class="select"
           formControlName="diasPorSemana">

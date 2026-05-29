@@ -2,134 +2,166 @@
 
   <div class="dashboard-header">
 
-    <h1>
-      Meu Treino Inteligente
-    </h1>
 
-    <div class="header-actions">
+<div class="header-actions">
 
-      <button
-        class="refresh-btn"
-        (click)="carregarTreinos()">
+  <button
+    class="refresh-btn"
+    (click)="carregarTreinos()">
 
-        Atualizar
-      </button>
+    Atualizar
+  </button>
 
-      <button
-        class="logout-btn"
-        (click)="sair()">
+  <button
+    class="logout-btn"
+    (click)="sair()">
 
-        Sair
-      </button>
+    Sair
+  </button>
 
-    </div>
+</div>
+
+<h1 class="dashboard-title">
+  Meu Treino Inteligente
+</h1>
 
   </div>
 
-  @if (carregando()) {
+@if (carregando()) {
 
-    <div class="loading-box">
 
-      <p>
-        Carregando treino inteligente...
-      </p>
+<div class="loading-box">
+
+  <p>
+    Carregando treino inteligente...
+  </p>
+
+</div>
+
+
+}
+
+@if (erro()) {
+
+
+<div class="error-box">
+
+  <p>
+    {{ erro() }}
+  </p>
+
+</div>
+
+
+}
+
+@if (
+!carregando() &&
+!erro() &&
+treinos().length === 0
+) {
+
+
+<div class="empty-box centered-box">
+
+  <p>
+    Nenhum treino encontrado.
+    O agente de IA ainda está elaborando a sua ficha, aguarde e volte em poucos minutos.
+  </p>
+
+</div>
+
+
+}
+
+@if (treinos().length > 0) {
+
+
+<div class="treino-acesso-container">
+
+  <img
+    src="/images/ficha-treino.png"
+    alt="Ficha de treino"
+    class="treino-image"
+    (click)="abrirFichaTreino()">
+
+  <p
+    class="treino-link-text"
+    (click)="abrirFichaTreino()">
+
+    Acesse a sua ficha de treinos
+
+  </p>
+
+</div>
+
+@for (
+  dia of treinosAgrupados() | keyvalue;
+  track dia.key
+) {
+
+  <section class="dia-section">
+
+    <h2>
+      {{ dia.key }}
+    </h2>
+
+    <div class="cards-grid">
+
+      @for (
+        treino of dia.value;
+        track treino.exercicioNome
+      ) {
+
+        <article class="treino-card">
+
+          <span class="grupo">
+            {{ treino.grupoMuscular }}
+          </span>
+
+          <h3>
+            {{ treino.exercicioNome }}
+          </h3>
+
+          <p>
+            <strong>Equipamento:</strong>
+            {{ treino.equipamento }}
+          </p>
+
+          <p>
+            <strong>Séries:</strong>
+            {{ treino.series }}
+          </p>
+
+          <p>
+            <strong>Repetições:</strong>
+            {{ treino.repeticoes }}
+          </p>
+
+          <p>
+            <strong>Intervalo:</strong>
+            {{ treino.intervalo }}
+          </p>
+
+          <div class="instrucao">
+
+            <strong>Execução:</strong>
+
+            <p>
+              {{ treino.instrucao }}
+            </p>
+
+          </div>
+
+        </article>
+      }
 
     </div>
-  }
 
-  @if (erro()) {
+  </section>
+}
 
-    <div class="error-box">
 
-      <p>
-        {{ erro() }}
-      </p>
-
-    </div>
-  }
-
-  @if (
-    !carregando() &&
-    !erro() &&
-    treinos().length === 0
-  ) {
-
-    <div class="empty-box">
-
-      <p>
-        Nenhum treino encontrado.
-      </p>
-
-    </div>
-  }
-
-  @if (treinos().length > 0) {
-
-    @for (
-      dia of treinosAgrupados() | keyvalue;
-      track dia.key
-    ) {
-
-      <section class="dia-section">
-
-        <h2>
-          {{ dia.key }}
-        </h2>
-
-        <div class="cards-grid">
-
-          @for (
-            treino of dia.value;
-            track treino.exercicioNome
-          ) {
-
-            <article class="treino-card">
-
-              <span class="grupo">
-                {{ treino.grupoMuscular }}
-              </span>
-
-              <h3>
-                {{ treino.exercicioNome }}
-              </h3>
-
-              <p>
-                <strong>Equipamento:</strong>
-                {{ treino.equipamento }}
-              </p>
-
-              <p>
-                <strong>Séries:</strong>
-                {{ treino.series }}
-              </p>
-
-              <p>
-                <strong>Repetições:</strong>
-                {{ treino.repeticoes }}
-              </p>
-
-              <p>
-                <strong>Intervalo:</strong>
-                {{ treino.intervalo }}
-              </p>
-
-              <div class="instrucao">
-
-                <strong>Execução:</strong>
-
-                <p>
-                  {{ treino.instrucao }}
-                </p>
-
-              </div>
-
-            </article>
-          }
-
-        </div>
-
-      </section>
-    }
-  }
+}
 
 </div>

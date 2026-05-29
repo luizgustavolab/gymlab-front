@@ -84,6 +84,14 @@ export class DashboardComponent implements OnInit {
     this.carregarTreinos();
   }
 
+  protected abrirFichaTreino(): void {
+
+console.log(
+'Abrir ficha de treino'
+);
+}
+
+  
   protected carregarTreinos(): void {
 
     this.carregando.set(true);
