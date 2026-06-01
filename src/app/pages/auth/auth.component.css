@@ -213,21 +213,13 @@
   position: fixed;
   inset: 0;
   background: rgba(2, 6, 23, 0.8);
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   z-index: 9999;
   padding: 24px;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
-}
-
-.lgpd-overlay.visible {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
 }
 
 .lgpd-modal {
