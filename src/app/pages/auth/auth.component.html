@@ -1,273 +1,123 @@
 @if (exibirBanner()) {
-
   <div class="lgpd-overlay">
-
     <div class="lgpd-modal">
-
-      <h2 class="lgpd-title">
-        🍪 Privacidade e Consentimento
-      </h2>
-
+      <h2 class="lgpd-title">Privacidade e Consentimento</h2>
       <p class="lgpd-text">
         Coletamos logs mínimos de consentimento para autenticação,
         segurança e conformidade LGPD.
       </p>
-
       <div class="button-group">
-
-        <button
-          class="btn-primary"
-          (click)="computarConsentimento(true)">
-
+        <button class="btn-primary" (click)="computarConsentimento(true)">
           Aceitar todos
         </button>
-
-        <button
-          class="btn-secondary"
-          (click)="computarConsentimento(false)">
-
+        <button class="btn-secondary" (click)="computarConsentimento(false)">
           Recusar opcionais
         </button>
-
       </div>
-
     </div>
-
   </div>
 }
 
-<div class="app-container">
+<div class="app-container" style="min-height: 100vh; height: auto; overflow-y: auto; padding: 24px 16px 60px 16px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center;">
 
   @if (mensagemErro()) {
-
     <div class="card">
-
       <div class="alert-error">
         {{ mensagemErro() }}
       </div>
-
     </div>
   }
 
   @if (mensagemSucesso()) {
-
     <div class="card">
-
       <div class="alert-success">
         {{ mensagemSucesso() }}
       </div>
-
     </div>
   }
 
   @if (view() === 'AUTH') {
-
     <div class="card auth-card">
-
-      <h1 class="logo">
-        GYMLAB
-      </h1>
-
-      <p class="subtitle">
-        IA + treino inteligente + performance
-      </p>
-
+      <h1 class="logo">GYMLAB</h1>
+      <p class="subtitle">IA + treino inteligente + performance</p>
       <div class="button-group">
-
-        <button
-          class="btn-primary"
-          (click)="irPara('LOGIN')">
-
+        <button class="btn-primary" (click)="irPara('LOGIN')">
           Entrar
         </button>
-
-        <button
-          class="btn-secondary"
-          (click)="irPara('REGISTER')">
-
+        <button class="btn-secondary" (click)="irPara('REGISTER')">
           Criar conta
         </button>
-
-        <button
-          class="btn-link"
-          (click)="irPara('RECOVER')">
-
+        <button class="btn-link" (click)="irPara('RECOVER')">
           Esqueci minha senha
         </button>
-
       </div>
-
     </div>
 
     <footer class="auth-footer">
-
       Criado por
-
-      <a
-        href="https://github.com/luizgustavolab"
-        target="_blank"
-        rel="noopener noreferrer">
-
+      <a href="https://github.com/luizgustavolab" target="_blank" rel="noopener noreferrer">
         luizgustavolab
-
       </a>
-
     </footer>
   }
 
   @if (view() === 'LOGIN') {
-
     <div class="card">
+      <h2 class="title">Login</h2>
+      <form [formGroup]="formLogin" (ngSubmit)="login()" class="form-group">
+        <input class="input" formControlName="email" type="email" autocomplete="email" placeholder="E-mail">
+        <input class="input" formControlName="senha" type="password" autocomplete="current-password" placeholder="Senha">
 
-      <h2 class="title">
-        Login
-      </h2>
+        <div class="login-options">
+          <label class="checkbox-wrapper">
+            <input type="checkbox" formControlName="salvarCredenciais">
+            <span>Salvar e-mail e senha</span>
+          </label>
+          <label class="checkbox-wrapper">
+            <input type="checkbox" formControlName="manterConectado">
+            <span>Manter conectado</span>
+          </label>
+        </div>
 
-      <form
-        [formGroup]="formLogin"
-        (ngSubmit)="login()"
-        class="form-group">
-
-        <input
-          class="input"
-          formControlName="email"
-          type="email"
-          autocomplete="email"
-          placeholder="E-mail">
-
-        <input
-          class="input"
-          formControlName="senha"
-          type="password"
-          autocomplete="current-password"
-          placeholder="Senha">
-
-       <div class="login-options">
-
-  <label class="checkbox-wrapper">
-
-    <input
-      type="checkbox"
-      formControlName="salvarCredenciais">
-
-    <span>
-      Salvar e-mail e senha
-    </span>
-
-  </label>
-
-  <label class="checkbox-wrapper">
-
-    <input
-      type="checkbox"
-      formControlName="manterConectado">
-
-    <span>
-      Manter conectado
-    </span>
-
-  </label>
-
-</div>
-
-        <button
-          type="submit"
-          class="btn-primary"
-          [disabled]="carregando()">
-
-          {{
-            carregando()
-              ? 'Entrando...'
-              : 'Entrar'
-          }}
-
+        <button type="submit" class="btn-primary" [disabled]="carregando()">
+          {{ carregando() ? 'Entrando...' : 'Entrar' }}
         </button>
 
         <div class="stack-buttons">
-
-          <button
-            type="button"
-            class="btn-secondary"
-            (click)="irPara('REGISTER')">
-
+          <button type="button" class="btn-secondary" (click)="irPara('REGISTER')">
             Criar conta
           </button>
-
-          <button
-            type="button"
-            class="btn-secondary"
-            (click)="irPara('RECOVER')">
-
+          <button type="button" class="btn-secondary" (click)="irPara('RECOVER')">
             Esqueci minha senha
           </button>
-
-          <button
-            type="button"
-            class="btn-link"
-            (click)="irPara('AUTH')">
-
+          <button type="button" class="btn-link" (click)="irPara('AUTH')">
             Voltar
           </button>
-
         </div>
-
       </form>
-
     </div>
   }
 
   @if (view() === 'RECOVER') {
-
     <div class="card">
-
-      <h2 class="title">
-        Recuperar senha
-      </h2>
-
-      <form
-        [formGroup]="formRecover"
-        (ngSubmit)="recuperarSenha()"
-        class="form-group">
-
-        <input
-          class="input"
-          formControlName="email"
-          type="email"
-          placeholder="Seu e-mail">
-
-        <button
-          type="submit"
-          class="btn-primary"
-          [disabled]="carregando()">
-
-          {{
-            carregando()
-              ? 'Enviando...'
-              : 'Enviar recuperação'
-          }}
-
+      <h2 class="title">Recuperar senha</h2>
+      <form [formGroup]="formRecover" (ngSubmit)="recuperarSenha()" class="form-group">
+        <input class="input" formControlName="email" type="email" placeholder="Seu e-mail">
+        <button type="submit" class="btn-primary" [disabled]="carregando()">
+          {{ carregando() ? 'Enviando...' : 'Enviar recuperação' }}
         </button>
-
         <div class="stack-buttons">
-
-          <button
-            type="button"
-            class="btn-link"
-            (click)="irPara('AUTH')">
-
+          <button type="button" class="btn-link" (click)="irPara('AUTH')">
             Voltar
           </button>
-
         </div>
-
       </form>
-
     </div>
   }
 
-  @if (view() === 'REGISTER') {
+@if (view() === 'REGISTER') {
 
-    <div class="card register-card">
+    <div class="card register-card" style="overflow: visible !important;">
 
       <h2 class="title">
         Criar conta
@@ -285,7 +135,8 @@
       <form
         [formGroup]="formCadastro"
         (ngSubmit)="enviarCadastroUnificado()"
-        class="form-group">
+        class="form-group"
+        style="overflow: visible !important;">
 
         <input
           class="input"
@@ -362,12 +213,9 @@
             Objetivo
           </option>
 
-          @for (o of opcoesObjetivo; track o) {
-
-            <option [value]="o">
-              {{ o }}
-            </option>
-          }
+          <option value="Hipertrofia">
+            Hipertrofia
+          </option>
 
         </select>
 
@@ -422,4 +270,3 @@
 
     </div>
   }
-</div>

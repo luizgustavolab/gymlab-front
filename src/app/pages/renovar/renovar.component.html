@@ -1,6 +1,6 @@
-<div class="profile-container" style="justify-content: center;">
-  <main class="profile-content">
-    <div class="profile-card">
+<div class="profile-container" style="justify-content: center; min-height: 100vh; height: auto; overflow-y: auto; padding: 20px 12px 40px 12px; box-sizing: border-box;">
+  <main class="profile-content" style="width: 100%; max-width: 550px; float: none; margin: 0 auto;">
+    <div class="profile-card" style="height: auto; min-height: unset; box-sizing: border-box;">
       <div class="profile-header">
         <h1>Configurar Nova Ficha</h1>
         <p>Preencha os dados abaixo para gerar um novo plano. <strong>Atenção: sua ficha atual será deletada permanentemente.</strong></p>
@@ -19,12 +19,18 @@
 
         <div class="field">
           <label>Peso (kg)</label>
-          <input class="input" type="number" formControlName="peso" min="30" max="300" placeholder="Ex: 75">
+          <select class="select" formControlName="peso">
+            <option [value]="null" disabled selected>Selecione</option>
+            <option *ngFor="let p of listaPesos" [value]="p">{{ p }} kg</option>
+          </select>
         </div>
 
         <div class="field">
           <label>Altura (m)</label>
-          <input class="input" type="number" formControlName="altura" step="0.01" min="1.30" max="2.40" placeholder="Ex: 1.75">
+          <select class="select" formControlName="altura">
+            <option [value]="null" disabled selected>Selecione</option>
+            <option *ngFor="let a of listaAlturas" [value]="a.value">{{ a.label }}</option>
+          </select>
         </div>
 
         <div class="field">
@@ -32,15 +38,15 @@
           <select class="select" formControlName="objetivo">
             <option value="">Selecione</option>
             <option value="Hipertrofia">Hipertrofia</option>
-            <option value="Emagrecimento">Emagrecimento</option>
-            <option value="Força">Força</option>
-            <option value="Condicionamento">Condicionamento</option>
-          </select>
+            </select>
         </div>
 
         <div class="field">
           <label>Dias de treino por semana</label>
-          <input class="input" type="number" formControlName="diasPorSemana" min="1" max="7">
+          <select class="select" formControlName="diasPorSemana">
+            <option [value]="null" disabled>Selecione</option>
+            <option *ngFor="let d of listaDias" [value]="d.value">{{ d.label }}</option>
+          </select>
         </div>
 
         <div class="field">
@@ -50,10 +56,12 @@
           </label>
         </div>
 
-        <div style="display: flex; gap: 10px; margin-top: 20px;">
-          <button type="button" class="save-button" style="background: #334155;" (click)="voltar()">Voltar</button>
-          <button type="submit" class="save-button" [disabled]="form.invalid || carregando()">
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 24px; width: 100%;">
+          <button type="submit" class="save-button" style="width: 100% !important; min-width: 0 !important; box-sizing: border-box;" [disabled]="form.invalid || carregando()">
             {{ carregando() ? 'Processando...' : 'Confirmar e Gerar Nova' }}
+          </button>
+          <button type="button" class="save-button" style="width: 100% !important; min-width: 0 !important; box-sizing: border-box; background: #334155;" (click)="voltar()">
+            Voltar
           </button>
         </div>
       </form>

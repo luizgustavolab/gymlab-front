@@ -17,14 +17,23 @@ export class RenovarTreinoComponent {
   private router = inject(Router);
   private http = inject(HttpClient);
 
+  listaPesos = Array.from({ length: 271 }, (_, i) => i + 30); // 30 a 300
+  
+  listaAlturas = Array.from({ length: 112 }, (_, i) => {
+    const val = parseFloat(((130 + i) / 100).toFixed(2));
+    return { value: val, label: val.toFixed(2) + 'm' }; // 1.30m a 2.40m
+  });
+
+  listaDias = Array.from({ length: 7 }, (_, i) => {
+    const val = i + 1;
+    return { value: val, label: val.toString().padStart(2, '0') }; // "01" a "07"
+  });
+
   form: FormGroup = this.fb.group({
     genero: ['', Validators.required],
-    // Peso: min 30, max 300
     peso: [null, [Validators.required, Validators.min(30), Validators.max(300)]],
-    // Altura: min 1.30, max 2.40
     altura: [null, [Validators.required, Validators.min(1.3), Validators.max(2.4)]],
     objetivo: ['', Validators.required],
-    // Dias: min 1, max 7
     diasPorSemana: [3, [Validators.required, Validators.min(1), Validators.max(7)]],
     concordou: [false, Validators.requiredTrue]
   });

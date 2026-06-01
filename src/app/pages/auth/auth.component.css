@@ -1,244 +1,150 @@
 :host {
-
   display: block;
-
   min-height: 100dvh;
-
   color: #f8fafc;
-
-  font-family:
-    Inter,
-    system-ui,
-    sans-serif;
-
+  font-family: Inter, system-ui, sans-serif;
   overflow-y: auto;
 }
 
 .app-container {
-
   min-height: 100dvh;
-
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
-
   justify-content: flex-start;
-
-  padding:
-    32px 24px 48px;
-
+  padding: 32px 24px 48px;
   overflow-y: auto;
 }
 
 .card {
-
   width: 100%;
-
   max-width: 460px;
-
-  background:
-    rgba(15, 23, 42, 0.08);
-
+  background: rgba(15, 23, 42, 0.08);
   border-radius: 28px;
-
   padding: 36px 28px;
-
   margin: auto 0;
-
-  box-shadow:
-    0 10px 35px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.16);
 }
 
 .auth-card {
-
   text-align: center;
 }
 
 .register-card {
-
   max-width: 540px;
 }
 
 .logo {
-
   font-size: 3rem;
-
   font-weight: 900;
-
   color: #10b981;
-
   letter-spacing: -2px;
-
   margin-bottom: 12px;
-
-  text-shadow:
-    0 0 20px rgba(16, 185, 129, 0.35);
+  text-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
 }
 
 .title {
-
   font-size: 2rem;
-
   font-weight: 800;
-
   color: #ffffff;
-
   margin-bottom: 24px;
-
   text-align: center;
 }
 
 .subtitle {
-
   color: #cbd5e1;
-
   font-size: 1rem;
-
   line-height: 1.6;
-
   margin-bottom: 28px;
 }
 
 .form-group {
-
   display: flex;
-
   flex-direction: column;
-
   gap: 16px;
 }
 
 .row {
-
   display: grid;
-
   grid-template-columns: 1fr 1fr;
-
   gap: 16px;
 }
 
 .input,
 .select {
-
   width: 100%;
-
-  border: none;
-
-  border-radius: 16px;
-
-  background:
-    rgba(2, 6, 23, 0.72);
-
-  color: #f8fafc;
-
-  padding: 16px 18px;
-
-  font-size: 0.95rem;
-
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 18px;
+  background: rgba(2, 6, 23, 0.30);
+  color: #ffffff;
+  padding: 16px;
+  font-size: 0.96rem;
   outline: none;
-
   transition:
+    border 0.2s ease,
     background 0.2s ease,
     box-shadow 0.2s ease;
 }
 
 .input:focus,
 .select:focus {
-
-  background:
-    rgba(15, 23, 42, 0.92);
-
-  box-shadow:
-    0 0 0 4px rgba(16, 185, 129, 0.15);
+  background: rgba(15, 23, 42, 0.92);
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
 }
 
 .input::placeholder {
-
   color: #64748b;
 }
 
 .select option {
-
   background: #0f172a;
-
   color: #ffffff;
 }
 
 .login-options {
-
   display: flex;
-
   flex-direction: column;
-
   gap: 12px;
-
   margin-top: 4px;
-
   margin-bottom: 6px;
-
   align-items: flex-start;
 }
 
 .checkbox-wrapper {
-
   display: flex;
-
   align-items: center;
-
   gap: 10px;
-
   cursor: pointer;
-
   color: #cbd5e1;
-
   font-size: 0.92rem;
-
   user-select: none;
 }
 
 .checkbox-wrapper input[type="checkbox"] {
-
   width: 18px;
-
   height: 18px;
-
   accent-color: #10b981;
-
   cursor: pointer;
 }
 
 .button-group,
 .stack-buttons {
-
   display: flex;
-
   flex-direction: column;
-
   gap: 14px;
-
   margin-top: 10px;
 }
 
 .btn-primary,
 .btn-secondary,
 .btn-link {
-
   width: 100%;
-
   border: none;
-
   border-radius: 16px;
-
   padding: 16px 18px;
-
   font-size: 0.95rem;
-
   font-weight: 700;
-
   cursor: pointer;
-
   transition:
     transform 0.2s ease,
     opacity 0.2s ease,
@@ -247,225 +153,143 @@
 }
 
 .btn-primary {
-
   background: #10b981;
-
   color: #020617;
-
-  box-shadow:
-    0 10px 25px rgba(16, 185, 129, 0.25);
+  box-shadow: 0 10px 25px rgba(16, 185, 129, 0.25);
 }
 
 .btn-primary:hover {
-
   opacity: 0.94;
-
   transform: translateY(-2px);
-
-  box-shadow:
-    0 14px 30px rgba(16, 185, 129, 0.32);
+  box-shadow: 0 14px 30px rgba(16, 185, 129, 0.32);
 }
 
 .btn-primary:disabled {
-
   opacity: 0.5;
-
   cursor: not-allowed;
-
   transform: none;
-
   box-shadow: none;
 }
 
 .btn-secondary {
-
-  background:
-    rgba(30, 41, 59, 0.42);
-
+  background: rgba(30, 41, 59, 0.42);
   color: #f8fafc;
 }
 
 .btn-secondary:hover {
-
-  background:
-    rgba(51, 65, 85, 0.62);
-
+  background: rgba(51, 65, 85, 0.62);
   transform: translateY(-2px);
 }
 
 .btn-link {
-
   background: transparent;
-
   color: #cbd5e1;
 }
 
 .btn-link:hover {
-
   color: #ffffff;
 }
 
 .alert-error,
 .alert-success {
-
   border-radius: 18px;
-
   padding: 16px 18px;
-
   font-size: 0.92rem;
-
   font-weight: 600;
-
   text-align: center;
 }
 
 .alert-error {
-
-  background:
-    rgba(239, 68, 68, 0.12);
-
+  background: rgba(239, 68, 68, 0.12);
   color: #fca5a5;
 }
 
 .alert-success {
-
-  background:
-    rgba(16, 185, 129, 0.12);
-
+  background: rgba(16, 185, 129, 0.12);
   color: #6ee7b7;
 }
 
 .lgpd-overlay {
-
   position: fixed;
-
   inset: 0;
-
-  background:
-    rgba(2, 6, 23, 0.8);
-
+  background: rgba(2, 6, 23, 0.8);
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   z-index: 9999;
-
   padding: 24px;
 }
 
 .lgpd-modal {
-
   width: 100%;
-
   max-width: 420px;
-
-  background:
-    rgba(15, 23, 42, 0.88);
-
+  background: rgba(15, 23, 42, 0.88);
   border-radius: 28px;
-
   padding: 32px 28px;
-
-  box-shadow:
-    0 15px 40px rgba(0, 0, 0, 0.45);
-
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
   text-align: center;
 }
 
 .lgpd-title {
-
   font-size: 1.5rem;
-
   font-weight: 800;
-
   color: #ffffff;
-
   margin-bottom: 18px;
 }
 
 .lgpd-text {
-
   color: #cbd5e1;
-
   line-height: 1.7;
-
   margin-bottom: 28px;
 }
 
 .auth-footer {
-
   width: 100%;
-
   text-align: center;
-
   margin-top: 32px;
-
   padding-bottom: 24px;
-
   color: rgba(255, 255, 255, 0.72);
-
   font-size: 0.9rem;
 }
 
 .auth-footer a {
-
   color: #10b981;
-
   text-decoration: none;
-
   font-weight: 700;
-
-  transition:
-    opacity 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 
 .auth-footer a:hover {
-
   opacity: 0.8;
-
   text-decoration: underline;
 }
 
 @media (max-width: 640px) {
-
   .app-container {
-
     justify-content: flex-start;
-
-    padding:
-      24px 16px 48px;
+    padding: 24px 16px 180px !important;
   }
 
   .card {
-
-    padding: 24px 18px;
-
+    padding: 24px 18px 48px;
     border-radius: 22px;
-
     margin-top: 12px;
-
     margin-bottom: 24px;
   }
 
   .logo {
-
     font-size: 2.3rem;
   }
 
   .title {
-
     font-size: 1.5rem;
   }
 
   .subtitle {
-
     font-size: 0.92rem;
   }
 
   .row {
-
     grid-template-columns: 1fr;
   }
 
@@ -474,21 +298,16 @@
   .btn-primary,
   .btn-secondary,
   .btn-link {
-
     padding: 14px 15px;
-
     font-size: 0.92rem;
   }
 
   .lgpd-overlay {
-
     padding: 18px;
   }
 
   .lgpd-modal {
-
     max-height: 88dvh;
-
     overflow-y: auto;
   }
 }
