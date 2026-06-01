@@ -59,12 +59,7 @@ export class AuthComponent implements OnInit {
   protected mensagemSucesso =
     signal<string | null>(null);
 
-  protected readonly exibirBanner =
-    signal(
-      !localStorage.getItem(
-        'gymlab_lgpd_consent'
-      )
-    );
+  protected readonly exibirBanner = signal(false);
 
   protected opcoesGenero = [
     'MASCULINO',
@@ -160,13 +155,11 @@ export class AuthComponent implements OnInit {
         ])
     });
 
-  async ngOnInit():
-    Promise<void> {
+  async ngOnInit(): Promise<void> {
 
-    if (!this.exibirBanner()) {
+  const consent = localStorage.getItem('gymlab_lgpd_consent');
 
-      this.view.set('AUTH');
-    }
+  this.exibirBanner.set(!consent);
 
     const emailSalvo =
       localStorage.getItem(
