@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
 
-  apiUrl: 'http://localhost:8080/api',
+  apiUrl: 'https://gymlab-back.onrender.com/api',
 
   supabase: {
     url: 'https://fvogijcayhkgsbczneio.supabase.co',

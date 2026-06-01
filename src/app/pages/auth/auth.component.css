@@ -209,42 +209,6 @@
   color: #6ee7b7;
 }
 
-.lgpd-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(2, 6, 23, 0.8);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  z-index: 9999;
-  padding: 24px;
-}
-
-.lgpd-modal {
-  width: 100%;
-  max-width: 420px;
-  background: rgba(15, 23, 42, 0.88);
-  border-radius: 28px;
-  padding: 32px 28px;
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
-  text-align: center;
-}
-
-.lgpd-title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin-bottom: 18px;
-}
-
-.lgpd-text {
-  color: #cbd5e1;
-  line-height: 1.7;
-  margin-bottom: 28px;
-}
-
 .auth-footer {
   width: 100%;
   text-align: center;
@@ -304,8 +268,4 @@
     font-size: 0.92rem;
   }
 
-  .lgpd-modal {
-    max-height: 88dvh;
-    overflow-y: auto;
-  }
 }

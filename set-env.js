@@ -8,10 +8,9 @@ if (!fs.existsSync(dirPath)) {
   fs.mkdirSync(dirPath, { recursive: true });
 }
 
-
 const envConfigFile = `export const environment = {
   production: ${process.env.PRODUCTION || 'false'},
-  apiUrl: '${process.env.API_URL || 'http://localhost:8080/api'}',
+  apiUrl: '${process.env.API_URL || 'https://gymlab-back.onrender.com/api'}',
   supabase: {
     url: '${process.env.SUPABASE_URL || ''}',
     anonKey: '${process.env.SUPABASE_KEY || ''}'

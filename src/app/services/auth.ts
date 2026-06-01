@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 
 import { supabase } from '../supabase';
 
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -108,30 +110,19 @@ export class AuthService {
     }
   }
 
-  async recuperarSenha(
-    email: string
-  ): Promise<void> {
-
+  async recuperarSenha(email: string): Promise<void> {
     try {
-
       this.carregando.set(true);
 
-      const {
-        error
-      } = await supabase.auth.resetPasswordForEmail(
-        email,
-        {
-          redirectTo:
-            'http://localhost:4200'
-        }
-      );
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    
+        redirectTo: window.location.origin 
+      });
 
       if (error) {
         throw error;
       }
-
     } finally {
-
       this.carregando.set(false);
     }
   }
