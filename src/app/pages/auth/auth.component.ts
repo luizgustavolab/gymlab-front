@@ -2,7 +2,8 @@ import {
   Component,
   inject,
   OnInit,
-  signal
+  signal,
+  ViewEncapsulation
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
@@ -28,7 +29,8 @@ import { supabase } from '../../supabase';
     ReactiveFormsModule
   ],
   templateUrl: './auth.component.html',
-  styleUrl: './auth.component.css'
+  styleUrl: './auth.component.css',
+  encapsulation: ViewEncapsulation.None
 })
 export class AuthComponent implements OnInit {
 
