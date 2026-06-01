@@ -1,27 +1,4 @@
-  @if (exibirBanner()) {
-  <div class="lgpd-overlay">
-    <div class="lgpd-modal">
-      <h2 class="lgpd-title">Privacidade e Consentimento</h2>
-
-      <p class="lgpd-text">
-        Coletamos logs mínimos de consentimento para autenticação,
-        segurança e conformidade LGPD.
-      </p>
-
-      <div class="button-group">
-        <button class="btn-primary" (click)="computarConsentimento(true)">
-          Aceitar todos
-        </button>
-
-        <button class="btn-secondary" (click)="computarConsentimento(false)">
-          Recusar opcionais
-        </button>
-      </div>
-    </div>
-  </div>
-}
-
-<div class="app-container" style="min-height: 100vh; height: auto; overflow-y: auto; padding: 24px 16px 60px 16px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+  <div class="app-container" style="min-height: 100vh; height: auto; overflow-y: auto; padding: 24px 16px 60px 16px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; align-items: center;">
 
   @if (mensagemErro()) {
     <div class="card">

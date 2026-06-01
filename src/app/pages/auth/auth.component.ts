@@ -20,7 +20,7 @@ import {
 } from '@angular/forms';
 
 import { supabase } from '../../supabase';
-
+import { environment } from '../../../environments/environment';
 @Component({
   selector: 'app-auth',
   standalone: true,
@@ -44,8 +44,8 @@ export class AuthComponent implements OnInit {
   protected mensagemErro = signal<string | null>(null);
   protected mensagemSucesso = signal<string | null>(null);
 
-  // ✅ agora sempre boolean (NUNCA null)
-  protected exibirBanner = signal(false);
+  // estado controlado (evita flash)
+  protected exibirBanner = signal<boolean | null>(null);
 
   protected opcoesGenero = ['MASCULINO', 'FEMININO'];
 
@@ -91,9 +91,29 @@ export class AuthComponent implements OnInit {
 
   ngOnInit(): void {
 
-    // ✅ LGPD banner controlado corretamente
-    const consent = localStorage.getItem('gymlab_lgpd_consent');
-    this.exibirBanner.set(!consent);
+    // evita flash de renderização
+    this.exibirBanner.set(null);
+
+    queueMicrotask(() => {
+      const consent = localStorage.getItem('gymlab_lgpd_consent');
+
+      if (!consent) {
+        this.exibirBanner.set(true);
+        return;
+      }
+
+      try {
+        const parsed = JSON.parse(consent);
+
+        const valido =
+          parsed?.versaoTermo === '1.0' &&
+          typeof parsed?.consentido === 'boolean';
+
+        this.exibirBanner.set(!valido);
+      } catch {
+        this.exibirBanner.set(true);
+      }
+    });
 
     const emailSalvo = localStorage.getItem('gymlab_email');
     const senhaSalva = localStorage.getItem('gymlab_senha');
@@ -109,9 +129,6 @@ export class AuthComponent implements OnInit {
         manterConectado
       });
     }
-
-    // ❌ REMOVIDO await supabase fora de async
-    // ✔ se quiser auto-login, faz aqui corretamente:
 
     if (manterConectado) {
       supabase.auth.getSession().then(({ data }) => {
@@ -138,18 +155,32 @@ export class AuthComponent implements OnInit {
       versaoTermo: '1.0'
     };
 
+    // evita duplicação de envio
+    const alreadySent = localStorage.getItem('gymlab_lgpd_sent');
+
     localStorage.setItem(
       'gymlab_lgpd_consent',
       JSON.stringify(payload)
     );
 
-    this.http.post(
-      'http://localhost:8080/api/lgpd/consentimento',
-      payload
-    ).subscribe();
+    if (!alreadySent) {
+      this.http.post(
+        `${environment.apiUrl}/lgpd/consentimento`,
+        payload
+      ).subscribe({
+        next: () => {
+          localStorage.setItem('gymlab_lgpd_sent', 'true');
+        },
+        error: (err) => {
+          console.error('Erro LGPD:', err);
+        }
+      });
+    }
 
-    // ✅ fecha banner de forma definitiva
-    this.exibirBanner.set(false);
+    queueMicrotask(() => {
+      this.exibirBanner.set(false);
+    });
+
     this.view.set('AUTH');
   }
 
@@ -238,9 +269,7 @@ export class AuthComponent implements OnInit {
       const signUpResult = await supabase.auth.signUp({
         email: email!,
         password: senha!,
-        options: {
-          data: { nome }
-        }
+        options: { data: { nome } }
       });
 
       if (signUpResult.error) {
@@ -253,12 +282,6 @@ export class AuthComponent implements OnInit {
         email: email!,
         password: senha!
       });
-
-      if (loginResult.error) {
-        this.mensagemErro.set('Erro no login automático.');
-        this.carregando.set(false);
-        return;
-      }
 
       const accessToken = loginResult.data.session?.access_token;
 
