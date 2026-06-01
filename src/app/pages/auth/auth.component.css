@@ -312,10 +312,6 @@
     font-size: 0.92rem;
   }
 
-  .lgpd-overlay {
-    padding: 18px;
-  }
-
   .lgpd-modal {
     max-height: 88dvh;
     overflow-y: auto;
