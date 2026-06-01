@@ -44,7 +44,6 @@ export class AuthComponent implements OnInit {
   protected mensagemErro = signal<string | null>(null);
   protected mensagemSucesso = signal<string | null>(null);
 
-  // estado controlado (evita flash)
   protected exibirBanner = signal<boolean | null>(null);
 
   protected opcoesGenero = ['MASCULINO', 'FEMININO'];
