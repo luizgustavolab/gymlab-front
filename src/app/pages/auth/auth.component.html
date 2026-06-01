@@ -1,9 +1,9 @@
- @if (exibirBanner()) {
-  <div class="lgpd-overlay">
-    <div class="lgpd-modal">
-      <h2 class="lgpd-title">Privacidade e Consentimento</h2>
-      <p class="lgpd-text">Coletamos logs mínimos de consentimento para autenticação e segurança.</p>
-      <div class="lgpd-actions">
+@if (exibirBanner()) {
+  <div class="gl-viewport-wrapper">
+    <div class="gl-content-panel">
+      <h2 class="gl-panel-title">Privacidade e Consentimento</h2>
+      <p class="gl-panel-text">Coletamos logs mínimos de consentimento para autenticação e segurança.</p>
+      <div class="gl-panel-actions">
         <button type="button" class="btn-primary" (click)="computarConsentimento(true)">Aceitar todos</button>
         <button type="button" class="btn-secondary" (click)="computarConsentimento(false)">Recusar opcionais</button>
       </div>

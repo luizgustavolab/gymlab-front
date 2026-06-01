@@ -270,7 +270,7 @@
 } 
 
 
-.lgpd-overlay {
+.gl-viewport-wrapper {
   position: fixed;
   top: 0;
   left: 0;
@@ -278,13 +278,13 @@
   height: 100vh; 
   background: rgba(2, 6, 23, 0.85); 
   backdrop-filter: blur(8px);      
-  display: flex; 
+  display: flex !important; 
   align-items: center;
   justify-content: center;
   z-index: 999999; 
 }
 
-.lgpd-modal {
+.gl-content-panel {
   display: block !important;
   background: #0f172a;              
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -297,28 +297,28 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
 
-.lgpd-title {
+.gl-panel-title {
   font-size: 1.6rem;
   font-weight: 800;
   color: #10b981;                   
   margin-bottom: 16px;
 }
 
-.lgpd-text {
+.gl-panel-text {
   color: #cbd5e1;
   font-size: 0.95rem;
   line-height: 1.6;
   margin-bottom: 28px;
 }
 
-.lgpd-actions {
+.gl-panel-actions {
   display: flex;
   gap: 12px;
   justify-content: center;
   flex-wrap: wrap;
 }
 
-.lgpd-actions button {
+.gl-panel-actions button {
   flex: 1;
   min-width: 140px;
 }
