@@ -1,166 +1,101 @@
 <div class="dashboard-container">
-
   <div class="dashboard-header">
-
-
-<div class="header-actions">
-
-  <button
-    class="refresh-btn"
-    (click)="carregarTreinos()">
-
-    Atualizar
-  </button>
-
-  <button
-    class="logout-btn"
-    (click)="sair()">
-
-    Sair
-  </button>
-
-</div>
-
-<h1 class="dashboard-title">
-  Meu Treino Inteligente
-</h1>
-
+    <div class="header-actions">
+      <button class="refresh-btn" (click)="gerarNovaFicha()">Gerar Nova Ficha</button>
+      <button class="logout-btn" (click)="sair()">Sair</button>
+    </div>
+    <h1 class="dashboard-title">Meu Treino Inteligente</h1>
   </div>
 
-@if (carregando()) {
+  @if (carregando()) {
+    <div class="loading-box">
+      <p>Carregando treino inteligente...</p>
+    </div>
+  }
 
+  @if (erro()) {
+    <div class="error-box">
+      <p>{{ erro() }}</p>
+    </div>
+  }
 
-<div class="loading-box">
+  @if (!carregando() && !erro() && treinos().length === 0) {
+    <div class="empty-box centered-box">
+      <p>Nenhum treino encontrado. O agente de IA ainda está elaborando a sua ficha.</p>
+    </div>
+  }
 
-  <p>
-    Carregando treino inteligente...
-  </p>
-
-</div>
-
-
-}
-
-@if (erro()) {
-
-
-<div class="error-box">
-
-  <p>
-    {{ erro() }}
-  </p>
-
-</div>
-
-
-}
-
-@if (
-!carregando() &&
-!erro() &&
-treinos().length === 0
-) {
-
-
-<div class="empty-box centered-box">
-
-  <p>
-    Nenhum treino encontrado. O agente de IA ainda está elaborando a sua ficha, aguarde e volte em poucos minutos.
-  </p>
-
-</div>
-
-
-}
-
-@if (treinos().length > 0) {
-
-
-<div class="treino-acesso-container">
-
-  <img
-    src="/images/ficha-treino.png"
-    alt="Ficha de treino"
-    class="treino-image"
-    (click)="abrirFichaTreino()">
-
-  <p
-    class="treino-link-text"
-    (click)="abrirFichaTreino()">
-
-    Acesse a sua ficha de treinos
-
-  </p>
-
-</div>
-
-@for (
-  dia of treinosAgrupados() | keyvalue;
-  track dia.key
-) {
-
-  <section class="dia-section">
-
-    <h2>
-      {{ dia.key }}
-    </h2>
-
-    <div class="cards-grid">
-
-      @for (
-        treino of dia.value;
-        track treino.exercicioNome
-      ) {
-
-        <article class="treino-card">
-
-          <span class="grupo">
-            {{ treino.grupoMuscular }}
-          </span>
-
-          <h3>
-            {{ treino.exercicioNome }}
-          </h3>
-
-          <p>
-            <strong>Equipamento:</strong>
-            {{ treino.equipamento }}
-          </p>
-
-          <p>
-            <strong>Séries:</strong>
-            {{ treino.series }}
-          </p>
-
-          <p>
-            <strong>Repetições:</strong>
-            {{ treino.repeticoes }}
-          </p>
-
-          <p>
-            <strong>Intervalo:</strong>
-            {{ treino.intervalo }}
-          </p>
-
-          <div class="instrucao">
-
-            <strong>Execução:</strong>
-
-            <p>
-              {{ treino.instrucao }}
-            </p>
-
-          </div>
-
-        </article>
+  @if (treinos().length > 0) {
+    <div class="treino-tabs">
+      @for (dia of diasDisponiveis(); track dia) {
+        <button 
+          class="tab-btn" 
+          [class.active]="treinoAtivo() === dia"
+          (click)="selecionarTreino(dia)">
+          {{ dia }}
+        </button>
       }
-
     </div>
 
-  </section>
-}
+    @if (treinoAtivo() !== null) {
+      <section class="dia-section">
+        <h2 (click)="selecionarTreino(treinoAtivo()!)" style="cursor: pointer;">
+          {{ treinoAtivo() }} <span style="font-size: 0.8rem; color: #64748b;">(Clique para recolher)</span>
+        </h2>
+        
+        <div class="cards-grid">
+          @for (treino of treinosAgrupados()[treinoAtivo()!]; track treino.exercicioNome) {
+            <article class="treino-card" 
+                     [class.expandido]="isExpandido(treino.exercicioNome)"
+                     [class.concluido]="isConcluido(treino.exercicioNome)">
+              
+              <div class="card-header" (click)="toggleExercicio(treino.exercicioNome)">
+                <div class="header-main">
+                  <span class="grupo">{{ treino.grupoMuscular }}</span>
+                  
+                  <div class="title-with-checkbox">
+                    <div class="checkbox-box" 
+                         [class.checked]="isConcluido(treino.exercicioNome)" 
+                         (click)="toggleConcluido(treino.exercicioNome, $event)">
+                      @if (isConcluido(treino.exercicioNome)) { <span>✓</span> }
+                    </div>
+                    <h3>{{ treino.exercicioNome }}</h3>
+                  </div>
 
+                  <div class="resumo-info">
+                    <p><strong>Equipamento:</strong> {{ treino.equipamento }}</p>
+                    <p><strong>Séries:</strong> {{ treino.series }} | 
+                       <strong>Repetições:</strong> {{ treino.repeticoes }} | 
+                       <strong>Intervalo:</strong> {{ treino.intervalo }}</p>
+                  </div>
+                </div>
+                
+                <span class="toggle-icon">{{ isExpandido(treino.exercicioNome) ? '▲' : '▼' }}</span>
+              </div>
 
-}
+              @if (isExpandido(treino.exercicioNome)) {
+                <div class="card-body">
+                  <div class="instrucao">
+                    <strong>Execução e Dicas:</strong>
+                    <p>{{ treino.instrucao }}</p>
+                  </div>
+                  <div class="weight-input">
+                    <label>Peso (kg): </label>
+                    <input type="number" min="2" max="200" placeholder="0">
+                  </div>
+                </div>
+              }
+            </article>
+          }
+        </div>
+      </section>
+    }
+  }
 
+  <div class="dashboard-footer">
+    <p class="disclaimer">
+      <strong>Aviso de Responsabilidade:</strong> As sugestões geradas por esta aplicação utilizam Inteligência Artificial e não substituem a avaliação, prescrição ou acompanhamento de um profissional de Educação Física qualificado. Consulte sempre um médico e um treinador capacitado antes de iniciar qualquer rotina de exercícios.
+    </p>
+    <span class="version">Versão 1.0.0</span>
+  </div>
 </div>

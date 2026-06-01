@@ -1,0 +1,62 @@
+<div class="profile-container" style="justify-content: center;">
+  <main class="profile-content">
+    <div class="profile-card">
+      <div class="profile-header">
+        <h1>Configurar Nova Ficha</h1>
+        <p>Preencha os dados abaixo para gerar um novo plano. <strong>Atenção: sua ficha atual será deletada permanentemente.</strong></p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="confirmarRenovacao()" class="profile-form">
+        
+        <div class="field">
+          <label>Gênero</label>
+          <select class="select" formControlName="genero">
+            <option value="">Selecione</option>
+            <option value="MASCULINO">Masculino</option>
+            <option value="FEMININO">Feminino</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Peso (kg)</label>
+          <input class="input" type="number" formControlName="peso" min="30" max="300" placeholder="Ex: 75">
+        </div>
+
+        <div class="field">
+          <label>Altura (m)</label>
+          <input class="input" type="number" formControlName="altura" step="0.01" min="1.30" max="2.40" placeholder="Ex: 1.75">
+        </div>
+
+        <div class="field">
+          <label>Objetivo</label>
+          <select class="select" formControlName="objetivo">
+            <option value="">Selecione</option>
+            <option value="Hipertrofia">Hipertrofia</option>
+            <option value="Emagrecimento">Emagrecimento</option>
+            <option value="Força">Força</option>
+            <option value="Condicionamento">Condicionamento</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Dias de treino por semana</label>
+          <input class="input" type="number" formControlName="diasPorSemana" min="1" max="7">
+        </div>
+
+        <div class="field">
+          <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+            <input type="checkbox" formControlName="concordou">
+            Entendo que a ficha atual será deletada.
+          </label>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+          <button type="button" class="save-button" style="background: #334155;" (click)="voltar()">Voltar</button>
+          <button type="submit" class="save-button" [disabled]="form.invalid || carregando()">
+            {{ carregando() ? 'Processando...' : 'Confirmar e Gerar Nova' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
