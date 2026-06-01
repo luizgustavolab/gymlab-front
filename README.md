@@ -192,6 +192,58 @@ O frontend não toma decisões sobre quais exercícios selecionar ou quais orden
 
 ---
 
+## 🚀 DEPLOY
+
+# Para fazer o deploy na Vercel, foi feito isso:
+
+1. Configuração de Redirecionamento (`vercel.json`)
+Criado na raiz do projeto para interceptar as rotas da SPA (como `/auth`, `/dashboard`, `/renovar`) e evitar erros 404 ao atualizar a página (F5) no navegador:
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
+
+2. Script de Injeção Dinâmica de Ambiente (set-env.js)
+Criado na raiz para ler as Variáveis de Ambiente da Vercel em tempo de execução no servidor de build, gerando o arquivo environment.ts automaticamente antes da compilação e sem expor chaves sensíveis no GitHub:
+
+JavaScript
+const fs = require('fs');
+const path = require('path');
+
+const dirPath = path.join(__dirname, 'src', 'environments');
+const filePath = path.join(dirPath, 'environment.ts');
+
+if (!fs.existsSync(dirPath)) {
+  fs.mkdirSync(dirPath, { recursive: true });
+}
+
+const envConfigFile = `export const environment = {
+  production: ${process.env.PRODUCTION || 'false'},
+  apiUrl: '${process.env.API_URL || 'http://localhost:8080/api'}',
+  supabaseUrl: '${process.env.SUPABASE_URL || ''}',
+  supabaseKey: '${process.env.SUPABASE_KEY || ''}'
+};
+`;
+
+fs.writeFileSync(filePath, envConfigFile);
+console.log(`✅ environment.ts gerado com sucesso em: ${filePath}`);
+
+3. Automação do Pipeline de Build (package.json)
+O script de build foi alterado para garantir que o script gerador de ambiente rode imediatamente antes do compilador do Angular (ng build):
+
+"scripts": {
+  "build": "node set-env.js && ng build"
+}
+
+4. Configuração das Variáveis de Ambiente na Vercel
+Ao importar o repositório no painel da Vercel, as seguintes chaves precisam ser cadastradas na aba de Environment Variables:
+PRODUCTION: true
+API_URL: URL da API do backend hospedada no Render (https://sua-api.onrender.com/api)
+SUPABASE_URL: URL do seu projeto no Supabase
+SUPABASE_KEY: A sua chave pública anônima (anon key) do Supabase
+
+
 # 📄 Licença
 
 Projeto privado para fins de estudo, engenharia de software aplicada, e experimentação de sistemas inteligentes de prescrição de treino.
