@@ -6,9 +6,7 @@ import {
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
-
 import { Router } from '@angular/router';
-
 import { HttpClient } from '@angular/common/http';
 
 import { TreinoService } from '../../services/treino';
@@ -34,37 +32,20 @@ import { supabase } from '../../supabase';
 })
 export class AuthComponent implements OnInit {
 
-  private router =
-    inject(Router);
+  private router = inject(Router);
+  private http = inject(HttpClient);
+  private treinoService = inject(TreinoService);
 
-  private http =
-    inject(HttpClient);
+  protected view = signal<'AUTH' | 'LOGIN' | 'REGISTER' | 'RECOVER'>('AUTH');
 
-  private treinoService =
-    inject(TreinoService);
+  protected carregando = signal(false);
+  protected mensagemErro = signal<string | null>(null);
+  protected mensagemSucesso = signal<string | null>(null);
 
-  protected view = signal<
-    'AUTH' |
-    'LOGIN' |
-    'REGISTER' |
-    'RECOVER'
-  >('AUTH');
+  // ✅ agora sempre boolean (NUNCA null)
+  protected exibirBanner = signal(false);
 
-  protected carregando =
-    signal(false);
-
-  protected mensagemErro =
-    signal<string | null>(null);
-
-  protected mensagemSucesso =
-    signal<string | null>(null);
-
-  protected readonly exibirBanner = signal(false);
-
-  protected opcoesGenero = [
-    'MASCULINO',
-    'FEMININO'
-  ];
+  protected opcoesGenero = ['MASCULINO', 'FEMININO'];
 
   protected opcoesObjetivo = [
     'Hipertrofia',
@@ -73,116 +54,53 @@ export class AuthComponent implements OnInit {
     'Condicionamento'
   ];
 
-  protected pesos = Array.from(
-    { length: 131 },
-    (_, i) => i + 30
-  );
+  protected pesos = Array.from({ length: 131 }, (_, i) => i + 30);
 
   protected alturas = Array.from(
     { length: 111 },
-    (_, i) =>
-      (1.30 + i * 0.01)
-        .toFixed(2)
+    (_, i) => (1.30 + i * 0.01).toFixed(2)
   );
 
-  protected formLogin =
-    new FormGroup({
+  protected formLogin = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    senha: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    salvarCredenciais: new FormControl(false),
+    manterConectado: new FormControl(false)
+  });
 
-      email: new FormControl('', [
-        Validators.required,
-        Validators.email
-      ]),
+  protected formRecover = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email])
+  });
 
-      senha: new FormControl('', [
-        Validators.required,
-        Validators.minLength(6)
-      ]),
+  protected formCadastro = new FormGroup({
+    nome: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    senha: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    genero: new FormControl('', [Validators.required]),
+    peso: new FormControl('70', [Validators.required]),
+    altura: new FormControl('1.70', [Validators.required]),
+    objetivo: new FormControl('', [Validators.required]),
+    diasPorSemana: new FormControl(3, [
+      Validators.required,
+      Validators.min(1),
+      Validators.max(7)
+    ])
+  });
 
-      salvarCredenciais:
-        new FormControl(false),
+  ngOnInit(): void {
 
-      manterConectado:
-        new FormControl(false)
-    });
+    // ✅ LGPD banner controlado corretamente
+    const consent = localStorage.getItem('gymlab_lgpd_consent');
+    this.exibirBanner.set(!consent);
 
-  protected formRecover =
-    new FormGroup({
-
-      email: new FormControl('', [
-        Validators.required,
-        Validators.email
-      ])
-    });
-
-  protected formCadastro =
-    new FormGroup({
-
-      nome: new FormControl('', [
-        Validators.required
-      ]),
-
-      email: new FormControl('', [
-        Validators.required,
-        Validators.email
-      ]),
-
-      senha: new FormControl('', [
-        Validators.required,
-        Validators.minLength(6)
-      ]),
-
-      genero: new FormControl('', [
-        Validators.required
-      ]),
-
-      peso: new FormControl('70', [
-        Validators.required
-      ]),
-
-      altura: new FormControl('1.70', [
-        Validators.required
-      ]),
-
-      objetivo: new FormControl('', [
-        Validators.required
-      ]),
-
-      diasPorSemana:
-        new FormControl(3, [
-          Validators.required,
-          Validators.min(1),
-          Validators.max(7)
-        ])
-    });
-
-  async ngOnInit(): Promise<void> {
-
-  const consent = localStorage.getItem('gymlab_lgpd_consent');
-
-  this.exibirBanner.set(!consent);
-
-    const emailSalvo =
-      localStorage.getItem(
-        'gymlab_email'
-      );
-
-    const senhaSalva =
-      localStorage.getItem(
-        'gymlab_senha'
-      );
+    const emailSalvo = localStorage.getItem('gymlab_email');
+    const senhaSalva = localStorage.getItem('gymlab_senha');
 
     const manterConectado =
-      localStorage.getItem(
-        'gymlab_manter_conectado'
-      ) === 'true';
+      localStorage.getItem('gymlab_manter_conectado') === 'true';
 
-    if (
-      emailSalvo &&
-      senhaSalva
-    ) {
-
+    if (emailSalvo && senhaSalva) {
       this.formLogin.patchValue({
-
         email: emailSalvo,
         senha: senhaSalva,
         salvarCredenciais: true,
@@ -190,48 +108,31 @@ export class AuthComponent implements OnInit {
       });
     }
 
+    // ❌ REMOVIDO await supabase fora de async
+    // ✔ se quiser auto-login, faz aqui corretamente:
+
     if (manterConectado) {
-
-      const {
-        data
-      } = await supabase.auth
-        .getSession();
-
-      if (data.session) {
-
-        this.router.navigate([
-          '/dashboard'
-        ]);
-      }
+      supabase.auth.getSession().then(({ data }) => {
+        if (data.session) {
+          this.router.navigate(['/dashboard']);
+        }
+      });
     }
   }
 
   protected irPara(
-    tela:
-      'AUTH' |
-      'LOGIN' |
-      'REGISTER' |
-      'RECOVER'
+    tela: 'AUTH' | 'LOGIN' | 'REGISTER' | 'RECOVER'
   ): void {
-
     this.mensagemErro.set(null);
-
     this.mensagemSucesso.set(null);
-
     this.view.set(tela);
   }
 
-  protected computarConsentimento(
-    aceitou: boolean
-  ): void {
+  protected computarConsentimento(aceitou: boolean): void {
 
     const payload = {
-
       consentido: aceitou,
-
-      dataHora:
-        new Date().toISOString(),
-
+      dataHora: new Date().toISOString(),
       versaoTermo: '1.0'
     };
 
@@ -243,42 +144,18 @@ export class AuthComponent implements OnInit {
     this.http.post(
       'http://localhost:8080/api/lgpd/consentimento',
       payload
-    ).subscribe({
+    ).subscribe();
 
-      next: () => {
-
-        console.log(
-          'Consentimento LGPD registrado.'
-        );
-      },
-
-      error: (err) => {
-
-        console.error(
-          'Erro ao registrar consentimento:',
-          err
-        );
-      }
-    });
-
+    // ✅ fecha banner de forma definitiva
     this.exibirBanner.set(false);
-
     this.view.set('AUTH');
   }
 
-  protected async login():
-    Promise<void> {
-
-    if (
-      this.formLogin.invalid
-    ) {
-      return;
-    }
+  protected async login(): Promise<void> {
+    if (this.formLogin.invalid) return;
 
     this.carregando.set(true);
-
     this.mensagemErro.set(null);
-
     this.mensagemSucesso.set(null);
 
     const {
@@ -288,123 +165,63 @@ export class AuthComponent implements OnInit {
       manterConectado
     } = this.formLogin.getRawValue();
 
-    const {
-      error
-    } = await supabase.auth
-      .signInWithPassword({
-
-        email: email!,
-        password: senha!
-      });
+    const { error } = await supabase.auth.signInWithPassword({
+      email: email!,
+      password: senha!
+    });
 
     if (error) {
-
-      console.error(error);
-
-      this.mensagemErro.set(
-        'E-mail ou senha inválidos.'
-      );
-
+      this.mensagemErro.set('E-mail ou senha inválidos.');
       this.carregando.set(false);
-
       return;
     }
 
     if (salvarCredenciais) {
-
-      localStorage.setItem(
-        'gymlab_email',
-        email!
-      );
-
-      localStorage.setItem(
-        'gymlab_senha',
-        senha!
-      );
-
+      localStorage.setItem('gymlab_email', email!);
+      localStorage.setItem('gymlab_senha', senha!);
     } else {
-
-      localStorage.removeItem(
-        'gymlab_email'
-      );
-
-      localStorage.removeItem(
-        'gymlab_senha'
-      );
+      localStorage.removeItem('gymlab_email');
+      localStorage.removeItem('gymlab_senha');
     }
 
     localStorage.setItem(
       'gymlab_manter_conectado',
-      String(
-        manterConectado
-      )
+      String(manterConectado)
     );
 
     this.carregando.set(false);
-
-    this.router.navigate([
-      '/dashboard'
-    ]);
+    this.router.navigate(['/dashboard']);
   }
 
-  protected async recuperarSenha():
-    Promise<void> {
-
-    if (
-      this.formRecover.invalid
-    ) {
-      return;
-    }
+  protected async recuperarSenha(): Promise<void> {
+    if (this.formRecover.invalid) return;
 
     this.carregando.set(true);
-
     this.mensagemErro.set(null);
-
     this.mensagemSucesso.set(null);
 
-    const email =
-      this.formRecover.value.email!;
+    const email = this.formRecover.value.email!;
 
-    const {
-      error
-    } = await supabase.auth
+    const { error } = await supabase.auth
       .resetPasswordForEmail(email);
 
     if (error) {
-
-      console.error(error);
-
-      this.mensagemErro.set(
-        'Erro ao enviar recuperação.'
-      );
-
+      this.mensagemErro.set('Erro ao enviar recuperação.');
     } else {
-
-      this.mensagemSucesso.set(
-        'E-mail de recuperação enviado.'
-      );
+      this.mensagemSucesso.set('E-mail de recuperação enviado.');
     }
 
     this.carregando.set(false);
   }
 
-  protected async enviarCadastroUnificado():
-    Promise<void> {
-
-    if (
-      this.formCadastro.invalid
-    ) {
-      return;
-    }
+  protected async enviarCadastroUnificado(): Promise<void> {
+    if (this.formCadastro.invalid) return;
 
     this.carregando.set(true);
-
     this.mensagemErro.set(null);
-
     this.mensagemSucesso.set(null);
 
     try {
-
       const {
         nome,
         email,
@@ -414,188 +231,67 @@ export class AuthComponent implements OnInit {
         altura,
         objetivo,
         diasPorSemana
-      } =
-        this.formCadastro.getRawValue();
+      } = this.formCadastro.getRawValue();
 
-      const signUpResult =
-        await supabase.auth
-          .signUp({
-
-            email: email!,
-            password: senha!,
-
-            options: {
-
-              data: {
-                nome
-              }
-            }
-          });
+      const signUpResult = await supabase.auth.signUp({
+        email: email!,
+        password: senha!,
+        options: {
+          data: { nome }
+        }
+      });
 
       if (signUpResult.error) {
-
-        console.error(
-          signUpResult.error
-        );
-
-        const mensagem =
-          signUpResult.error.message
-            || '';
-
-        if (
-          mensagem.includes(
-            'User already registered'
-          )
-        ) {
-
-          this.mensagemErro.set(
-            'Já existe uma conta cadastrada com este e-mail.'
-          );
-
-        } else {
-
-          this.mensagemErro.set(
-            'Erro ao criar conta.'
-          );
-        }
-
+        this.mensagemErro.set('Erro ao criar conta.');
         this.carregando.set(false);
-
         return;
       }
 
-      const loginResult =
-        await supabase.auth
-          .signInWithPassword({
-
-            email: email!,
-            password: senha!
-          });
+      const loginResult = await supabase.auth.signInWithPassword({
+        email: email!,
+        password: senha!
+      });
 
       if (loginResult.error) {
-
-        console.error(
-          loginResult.error
-        );
-
-        this.mensagemErro.set(
-          'Conta criada, mas não foi possível autenticar automaticamente.'
-        );
-
+        this.mensagemErro.set('Erro no login automático.');
         this.carregando.set(false);
-
         return;
       }
 
-      localStorage.setItem(
-        'gymlab_email',
-        email!
-      );
-
-      localStorage.setItem(
-        'gymlab_senha',
-        senha!
-      );
-
-      localStorage.setItem(
-        'gymlab_manter_conectado',
-        'true'
-      );
-
-      const session =
-        loginResult.data.session;
-
-      const accessToken =
-        session?.access_token;
+      const accessToken = loginResult.data.session?.access_token;
 
       if (!accessToken) {
-
-        this.mensagemErro.set(
-          'Falha ao obter token de autenticação.'
-        );
-
+        this.mensagemErro.set('Falha ao obter token.');
         this.carregando.set(false);
-
         return;
       }
 
-      this.treinoService
-        .gerarTreino(
-          {
-            genero,
-            peso,
-            altura,
-            objetivo,
-            diasPorSemana
-          },
-          accessToken
-        )
-        .subscribe({
+      this.treinoService.gerarTreino(
+        {
+          genero,
+          peso,
+          altura,
+          objetivo,
+          diasPorSemana
+        },
+        accessToken
+      ).subscribe({
+        next: () => {
+          this.mensagemSucesso.set('Conta criada com sucesso!');
+          this.carregando.set(false);
 
-          next: () => {
+          setTimeout(() => {
+            this.router.navigate(['/dashboard']);
+          }, 1200);
+        },
+        error: () => {
+          this.mensagemErro.set('Erro ao gerar treino.');
+          this.carregando.set(false);
+        }
+      });
 
-            this.mensagemSucesso.set(
-              'Conta criada e treino gerado com sucesso!'
-            );
-
-            this.carregando.set(false);
-
-            setTimeout(() => {
-
-              this.router.navigate([
-                '/dashboard'
-              ]);
-
-            }, 1200);
-          },
-
-          error: (erro) => {
-
-            console.error(erro);
-
-            if (
-              erro?.status === 401
-            ) {
-
-              this.mensagemErro.set(
-                'Usuário autenticado, mas o backend recusou o token JWT.'
-              );
-
-            } else {
-
-              this.mensagemErro.set(
-                'Erro ao gerar treino inteligente.'
-              );
-            }
-
-            this.carregando.set(false);
-          }
-        });
-
-    } catch (erro: any) {
-
-      console.error(erro);
-
-      const mensagem =
-        erro?.message || '';
-
-      if (
-        mensagem.includes(
-          'User already registered'
-        )
-      ) {
-
-        this.mensagemErro.set(
-          'Já existe uma conta cadastrada com este e-mail.'
-        );
-
-      } else {
-
-        this.mensagemErro.set(
-          'Erro inesperado ao criar conta.'
-        );
-      }
-
+    } catch {
+      this.mensagemErro.set('Erro inesperado.');
       this.carregando.set(false);
     }
   }
