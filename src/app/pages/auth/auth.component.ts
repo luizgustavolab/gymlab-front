@@ -277,12 +277,7 @@ export class AuthComponent implements OnInit {
         return;
       }
 
-      const loginResult = await supabase.auth.signInWithPassword({
-        email: email!,
-        password: senha!
-      });
-
-      const accessToken = loginResult.data.session?.access_token;
+      const accessToken = signUpResult.data.session?.access_token;
 
       if (!accessToken) {
         this.mensagemErro.set('Falha ao obter token.');
@@ -290,6 +285,8 @@ export class AuthComponent implements OnInit {
         return;
       }
 
+      // Gera o treino inicial em segundo plano: o cadastro não fica
+      // bloqueado esperando o backend (evita pagar o cold start aqui).
       this.treinoService.gerarTreino(
         {
           genero,
@@ -300,19 +297,13 @@ export class AuthComponent implements OnInit {
         },
         accessToken
       ).subscribe({
-        next: () => {
-          this.mensagemSucesso.set('Conta criada com sucesso!');
-          this.carregando.set(false);
-
-          setTimeout(() => {
-            this.router.navigate(['/dashboard']);
-          }, 1200);
-        },
-        error: () => {
-          this.mensagemErro.set('Erro ao gerar treino.');
-          this.carregando.set(false);
+        error: (err) => {
+          console.error('Erro ao gerar treino inicial:', err);
         }
       });
+
+      this.carregando.set(false);
+      this.router.navigate(['/dashboard']);
 
     } catch {
       this.mensagemErro.set('Erro inesperado.');

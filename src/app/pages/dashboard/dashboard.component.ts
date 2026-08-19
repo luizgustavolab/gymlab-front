@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal, computed } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TreinoService, ExercicioTreino } from '../../services/treino';
@@ -11,13 +11,18 @@ import { supabase } from '../../supabase';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   private treinoService = inject(TreinoService);
   private router = inject(Router);
 
   protected carregando = signal(true);
   protected erro = signal<string | null>(null);
   protected treinos = signal<ExercicioTreino[]>([]);
+
+  private readonly POLL_INTERVAL_MS = 3000;
+  private readonly POLL_MAX_TENTATIVAS = 10;
+  private pollTentativas = 0;
+  private pollTimeoutId: ReturnType<typeof setTimeout> | null = null;
   
   protected exerciciosExpandidos = signal<Set<string>>(new Set());
   protected exerciciosConcluidos = signal<Set<string>>(new Set());
@@ -52,6 +57,13 @@ export class DashboardComponent implements OnInit {
           this.treinoAtivo.set(chaves[0]);
         }
         this.carregando.set(false);
+
+        // Treino recém-criado ainda pode estar sendo gerado em segundo
+        // plano (ver enviarCadastroUnificado); tenta de novo por um tempo.
+        if (response.length === 0 && this.pollTentativas < this.POLL_MAX_TENTATIVAS) {
+          this.pollTentativas++;
+          this.pollTimeoutId = setTimeout(() => this.carregarTreinos(), this.POLL_INTERVAL_MS);
+        }
       },
       error: (err) => {
         console.error(err);
@@ -59,6 +71,12 @@ export class DashboardComponent implements OnInit {
         this.carregando.set(false);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.pollTimeoutId !== null) {
+      clearTimeout(this.pollTimeoutId);
+    }
   }
 
   protected gerarNovaFicha(): void {
